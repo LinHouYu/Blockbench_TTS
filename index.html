@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Argentine Asado 3D Gallery & Kokoro TTS Studio</title>
+  
+  <!-- Google model-viewer 官方库 -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  
+  <!-- Three.js 及 FBX/OrbitControls 支持 (用于渲染 .bbmodel 与 .fbx) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.0/umd/index.js"></script>
+  <!-- 引入热修复后的 Blockbench ASCII FBXLoader (彻底解决 Unknown format 与 undefined.name 错误) -->
+  <script src="SCRIPT/three_fbx_loader.js"></script>
+  <script>
+    if (typeof THREE.FBXLoader === 'undefined') {
+      fetch('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FBXLoader.js')
+        .then(r => r.text())
+        .then(code => {
+          code = code.replace('function isFbxFormatASCII( text ) {', 'function isFbxFormatASCII( text ) { return true;');
+          code = code.replace('const parentName = currentNode.name;', 'if (!currentNode) return; const parentName = currentNode.name;');
+          const s = document.createElement('script');
+          s.textContent = code;
+          document.head.appendChild(s);
+        }).catch(e => console.error("CDN FBXLoader fallback failed:", e));
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --bg-panel: rgba(18, 24, 38, 0.85);
+      --bg-card: rgba(28, 36, 56, 0.65);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.3);
+      --primary: #38bdf8;
+      --primary-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+      --accent-orange: #fb923c;
+      --accent-green: #34d399;
+      --accent-pink: #f472b6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(251, 146, 60, 0.07) 0%, transparent 40%),
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 顶部导航与 Header */
+    header {
+      padding: 20px 32px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      background: rgba(10, 14, 23, 0.7);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      font-size: 32px;
+      background: linear-gradient(135deg, #fb923c, #ef4444);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+    }
+
+    .logo-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* 主分类 Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 10px 22px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #0b0f19;
+      box-shadow: var(--primary-glow);
+    }
+
+    .tab-btn.tab-food.active {
+      background: var(--accent-orange);
+      box-shadow: 0 0 20px rgba(251, 146, 60, 0.4);
+    }
+
+    .tab-btn.tab-buildings.active {
+      background: var(--accent-green);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 16px;
+    }
+
+    .stat-pill {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-pill b {
+      color: var(--primary);
+    }
+
+    /* 主布局 */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 320px 1fr 420px;
+      gap: 20px;
+      padding: 20px 24px;
+      height: calc(100vh - 85px);
+    }
+
+    /* 左侧模型列表 */
+    .panel-list {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-box {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: #fff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    }
+
+    .item-scroll-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item-scroll-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .item-scroll-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .model-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .model-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .model-card.active {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+
+    .model-card.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--primary);
+    }
+
+    .card-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .card-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      image-rendering: pixelated;
+    }
+
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-badge {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* 中间 3D 渲染舞台 */
+    .panel-stage {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage-topbar {
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    .stage-title-wrap h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stage-title-wrap p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .stage-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .tool-btn.active {
+      background: var(--primary);
+      color: #0b0f19;
+      font-weight: 600;
+    }
+
+    .viewport-container {
+      flex: 1;
+      position: relative;
+      background: radial-gradient(circle at center, #162035 0%, #0d121f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* model-viewer 标签样式 */
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      outline: none;
+      --poster-color: transparent;
+      display: none;
+    }
+
+    /* Three.js Canvas 样式 */
+    #three-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* 3D 加载提示 */
+    .loader-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 14, 23, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .loader-overlay.show {
+      opacity: 1;
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid rgba(56, 189, 248, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .stage-format-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    /* 右侧控制台面板 (TTS 语音与材质详情) */
+    .panel-console {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tts-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tts-scroll-area::-webkit-scrollbar {
+      width: 6px;
+    }
+    .tts-scroll-area::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    /* 角色资料卡 */
+    .character-profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .profile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .profile-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .profile-tag {
+      font-size: 11px;
+      color: var(--accent-orange);
+      background: rgba(251, 146, 60, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .profile-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 动作与语音场景卡片 */
+    .action-group-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .action-group-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .action-header {
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .action-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-cond {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .lang-btn-grid {
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .voice-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 9px 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .voice-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .voice-btn.playing {
+      border-color: var(--accent-green);
+      background: rgba(52, 211, 153, 0.18);
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.3);
+    }
+
+    .voice-btn .lang-flag {
+      font-size: 16px;
+    }
+
+    .voice-btn .lang-label {
+      font-size: 11px;
+    }
+
+    /* 正在播放的字幕横幅卡片 */
+    .now-playing-card {
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid var(--border-color);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .playing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .playing-tag {
+      font-size: 11px;
+      color: var(--accent-green);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .playing-subtitle {
+      font-size: 13.5px;
+      color: #fff;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .playing-tts {
+      font-size: 12px;
+      color: var(--accent-orange);
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .playing-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* 非角色详情面板 (食物 & 建筑) */
+    .asset-detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 12.5px;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--text-muted);
+    }
+
+    .detail-val {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .texture-preview-box {
+      margin-top: 8px;
+      border: 1px dashed var(--border-color);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .texture-preview-box img {
+      max-width: 140px;
+      max-height: 140px;
+      border-radius: 6px;
+      image-rendering: pixelated;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 1200px) {
+      main {
+        grid-template-columns: 280px 1fr 340px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      body {
+        overflow-y: auto;
+      }
+      main {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .panel-stage {
+        height: 480px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部 Header -->
+  <header>
+    <div class="logo-group">
+      <div class="logo-icon">🥩</div>
+      <div class="logo-text">
+        <h1>Argentine Asado 3D Gallery & Studio</h1>
+        <p>Blockbench 像素模型与 Kokoro 多语言 TTS 语音联动展示台</p>
+      </div>
+    </div>
+
+    <!-- 三大主分类 Tab -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active tab-characters" onclick="switchCategory('characters')">
+        <span>👤</span> 角色 (Characters)
+      </button>
+      <button class="tab-btn tab-food" onclick="switchCategory('food')">
+        <span>🍖</span> 食物 (Food)
+      </button>
+      <button class="tab-btn tab-buildings" onclick="switchCategory('buildings')">
+        <span>🏠</span> 建筑 (Buildings)
+      </button>
+    </nav>
+
+    <!-- 状态指示 -->
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span>模型总量:</span> <b id="stat-model-count">0</b>
+      </div>
+      <div class="stat-pill">
+        <span>TTS 语音:</span> <b id="stat-voice-count">0 条 (3语)</b>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体工作区 -->
+  <main>
+    <!-- 左侧：模型资源列表 -->
+    <section class="panel-list">
+      <div class="panel-header">
+        <h2 id="list-panel-title"><span>👤</span> 角色列表</h2>
+        <span class="card-badge" id="list-count-badge">0 项</span>
+      </div>
+      <div class="search-box">
+        <input type="text" id="model-search-input" placeholder="🔍 搜索模型名称或特性..." oninput="handleSearch(this.value)">
+      </div>
+      <div class="item-scroll-list" id="model-item-list">
+        <!-- 动态注入列表卡片 -->
+      </div>
+    </section>
+
+    <!-- 中间：3D 核心舞台 -->
+    <section class="panel-stage">
+      <div class="stage-topbar">
+        <div class="stage-title-wrap">
+          <h3 id="stage-model-title">请选择一个模型</h3>
+          <p id="stage-model-desc">支持 360 度自由旋转、缩放与平移查看细节</p>
+        </div>
+        <div class="stage-controls">
+          <button class="tool-btn active" id="btn-autorotate" onclick="toggleAutoRotate()">
+            <span>🔄</span> 自动旋转
+          </button>
+          <button class="tool-btn" id="btn-wireframe" onclick="toggleWireframe()">
+            <span>📐</span> 线框模式
+          </button>
+          <button class="tool-btn" onclick="resetCamera()">
+            <span>🎯</span> 复位视角
+          </button>
+        </div>
+      </div>
+
+      <div class="viewport-container" id="viewport-box">
+        <!-- Google model-viewer 官方查看器 (支持 .glb / .gltf) -->
+        <model-viewer id="main-model-viewer"
+          camera-controls
+          auto-rotate
+          rotation-per-second="20deg"
+          shadow-intensity="1.2"
+          shadow-softness="0.8"
+          exposure="1.0"
+          interaction-prompt="none"
+          alt="Argentine Asado 3D Model">
+        </model-viewer>
+
+        <!-- Three.js Canvas (用于完美渲染 Blockbench .bbmodel 与 .fbx) -->
+        <canvas id="three-canvas"></canvas>
+
+        <!-- 加载动画 -->
+        <div class="loader-overlay" id="stage-loader">
+          <div class="spinner"></div>
+          <div style="font-size: 13px; color: var(--primary);">正在渲染 3D 几何与纹理...</div>
+        </div>
+
+        <!-- 底部格式徽章 -->
+        <div class="stage-format-badge">
+          <div class="dot-live"></div>
+          <span id="stage-format-text">WebGL 2.0 / PBR 渲染中</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右侧：TTS 专属语音控制台 / 模型详情面板 -->
+    <section class="panel-console">
+      <div class="panel-header">
+        <h2 id="console-panel-title"><span>🎙️</span> 角色专属语音控制台</h2>
+        <span class="card-badge" id="console-mode-badge" style="color: var(--accent-green);">KOKORO 0.8x</span>
+      </div>
+
+      <div class="tts-scroll-area" id="console-scroll-content">
+        <!-- 动态注入 TTS 控制项或资产详情卡片 -->
+      </div>
+
+      <!-- 实时台词与字幕横幅卡片 -->
+      <div class="now-playing-card" id="now-playing-banner" style="display: none;">
+        <div class="playing-header">
+          <div class="playing-tag">
+            <span class="dot-live"></span>
+            <span id="playing-lang-tag">🇨🇳 正在播放</span>
+          </div>
+          <div class="card-badge" id="playing-voice-badge">zf_xiaoni · 0.8x</div>
+        </div>
+        <div class="playing-subtitle" id="playing-sub-text">“请稍候...”</div>
+        <div class="playing-tts" id="playing-tts-text"></div>
+        <div class="playing-meta" id="playing-meta-text">食材熟度判定：--</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 全局隐藏 HTML5 音频播放器 -->
+  <audio id="tts-audio-player" preload="none"></audio>
+
+  <!-- 注入 Python 扫描所得全部数据 -->
+  <script>
+    const GALLERY_DATA = {"models": [{"id": "characters_bakabot8266", "name": "BakaBot8266", "title": "Baka_Bot_9000 (故障美食家·铁皮人)", "tag": "极度熟度要求 · 工业零件论", "desc": "复古 CRT 显示器脑袋，屏幕显示 (ᗜ ˰ ᗜ) 颜文字。把烤肉当成工业零件和能源电池包，需要极端的熟度（全熟或烧焦），否则会判定系统过载启动自爆！", "icon": "🤖", "category": "characters", "folder_name": "BakaBot8266", "model_file": "Blockbench/Characters/BakaBot8266/BakaBot8266.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/BakaBot8266/BakaBot8266_texture.png", "preview_file": "Blockbench/Characters/BakaBot8266/BakaBot8266_texture.png", "all_files": ["BakaBot8266.bbmodel", "BakaBot8266_texture.png"], "tts_key": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）"}, {"id": "characters_chef", "name": "Chef", "title": "Chef (烤肉大厨)", "tag": "烤肉原神 · 炭火掌控者", "desc": "阿根廷传统 Parrilla 首席烤肉大师，身手娴熟，掌握火候与食材的极致平衡。", "icon": "👨‍🍳", "category": "characters", "folder_name": "Chef", "model_file": "Blockbench/Characters/Chef/anime_male_chef.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/Chef/chef_palette.png", "preview_file": "Blockbench/Characters/Chef/chef_palette.png", "all_files": ["anime_male_chef.bbmodel", "anime_male_chef.fbx", "ArgentineParrilla.bbmodel", "chef_palette.png"], "tts_key": null}, {"id": "characters_donmateo", "name": "DonMateo", "title": "Don_Mateo (暴躁老叔)", "tag": "传统烤肉原教旨主义者", "desc": "地中海花白头发，浓密八字胡。对火候极其严苛，坚信正宗阿根廷烤肉必须多汁外焦里嫩，差一秒就会当场掀桌！", "icon": "👴", "category": "characters", "folder_name": "DonMateo", "model_file": "Blockbench/Characters/DonMateo/DonMateo.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/DonMateo/DonMateo_texture.png", "preview_file": "Blockbench/Characters/DonMateo/DonMateo_texture.png", "all_files": ["DonMateo.bbmodel", "DonMateo_texture.png"], "tts_key": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）"}, {"id": "characters_elcarbonero", "name": "ElCarbonero", "title": "El Carbonero (噬炭怪人·阿炭)", "tag": "专吃纯黑焦炭 (Burnt)", "desc": "黑灰焦炭爆炸头，嘴角满是黑煤灰。拒绝正常多汁肉类，指名道姓要烤到彻底焦黑（Burnt）嘎嘣脆、甚至想直接生啃炉膛里烧红的木炭！", "icon": "🔥", "category": "characters", "folder_name": "ElCarbonero", "model_file": "Blockbench/Characters/ElCarbonero/ElCarbonero.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/ElCarbonero/ElCarbonero_texture.png", "preview_file": "Blockbench/Characters/ElCarbonero/ElCarbonero_texture.png", "all_files": ["ElCarbonero.bbmodel", "ElCarbonero_texture.png"], "tts_key": "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！"}, {"id": "characters_momo", "name": "Momo", "title": "Momo (大胃王呆毛吃货娘)", "tag": "急不可耐 · 快熟主义", "desc": "蜜桃粉短发带呆毛，星星眼流口水。嘴急等不及，偏爱快熟的三分熟（Rare）或五分熟（Medium），幸福感拉满的大吃货！", "icon": "🍑", "category": "characters", "folder_name": "Momo", "model_file": "Blockbench/Characters/Momo/Momo.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/Momo/Momo_texture.png", "preview_file": "Blockbench/Characters/Momo/Momo_texture.png", "all_files": ["Momo.bbmodel", "Momo_texture.png"], "tts_key": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）"}, {"id": "characters_rikka", "name": "Rikka", "title": "Rikka (中二病眼罩少女)", "tag": "暗黑魔血 · 偏爱见血生肉", "desc": "深紫双马尾，右眼医用眼罩。自称右眼渴求淌着暗黑魔血的排骨与凝血魔肠，偏爱 Rare（三分熟）与 Medium（五分熟）！", "icon": "👁️", "category": "characters", "folder_name": "Rikka", "model_file": "Blockbench/Characters/Rikka/Rikka.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/Rikka/Rikka_texture.png", "preview_file": "Blockbench/Characters/Rikka/Rikka_preview.png", "all_files": ["Rikka.bbmodel", "Rikka.bbmodel.meta", "Rikka_preview.png", "Rikka_preview.png.meta", "Rikka_texture.png", "Rikka_texture.png.meta"], "tts_key": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）"}, {"id": "characters_sakuragyaruo", "name": "SakuraGyaruo", "title": "Sakura_Gyaruo (挑剔辣妹)", "tag": "拍照出片 · 杜绝寄生虫", "desc": "金粉渐变大波浪卷发，JK 开衫配泡泡袜。怕寄生虫又怕黑边，只吃 Well Done（全熟）或爆汁 Medium（五分熟），拍美美照片发社交平台！", "icon": "💅", "category": "characters", "folder_name": "SakuraGyaruo", "model_file": "Blockbench/Characters/SakuraGyaruo/SakuraGyaruo.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/SakuraGyaruo/SakuraGyaruo_texture.png", "preview_file": "Blockbench/Characters/SakuraGyaruo/SakuraGyaruo_texture.png", "all_files": ["SakuraGyaruo.bbmodel", "SakuraGyaruo_texture.png"], "tts_key": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）"}, {"id": "characters_ugachan", "name": "UgaChan", "title": "Uga_Chan (远古野人少女·乌嘎酱)", "tag": "火是坏文明 · 只吃纯生肉 (Raw)", "desc": "狂野棕红长发插着兽骨发饰，身穿豹纹兽皮短裙。拒绝火文明，直接生啃全生（Raw）排骨与生鸡肉，见血就吃的部落小野人！", "icon": "🍖", "category": "characters", "folder_name": "UgaChan", "model_file": "Blockbench/Characters/UgaChan/UgaChan.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/UgaChan/UgaChan_texture.png", "preview_file": "Blockbench/Characters/UgaChan/UgaChan_texture.png", "all_files": ["UgaChan.bbmodel", "UgaChan_texture.png"], "tts_key": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！"}, {"id": "characters_yuki", "name": "Yuki", "title": "Yuki (三无沉默可爱少女)", "tag": "温柔口感 · 默默盯视", "desc": "银白姬发式长直发，大围巾遮住下巴。说话轻声细语，偏爱恰到好处的温柔口感（Medium / Well Done），不满意时会发出幽幽叹息。", "icon": "🧣", "category": "characters", "folder_name": "Yuki", "model_file": "Blockbench/Characters/Yuki/Yuki.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/Characters/Yuki/Yuki_texture.png", "preview_file": "Blockbench/Characters/Yuki/Yuki_texture.png", "all_files": ["Yuki.bbmodel", "Yuki_texture.png"], "tts_key": "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）"}, {"id": "food_chorizo", "name": "Chorizo", "title": "Chorizo (阿根廷烤香肠)", "tag": "前菜垫胃 · 鲜美爆汁", "desc": "阿根廷 Parrilla 经典开胃香肠，表皮滋滋冒油，内里香料与猪肉香气四溢。五分熟弹嫩多汁，全熟焦香诱人。", "icon": "🌭", "category": "food", "folder_name": "Chorizo", "model_file": "Blockbench/Food/Chorizo/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/Food/Chorizo/straight_chorizo_1to1_texture.png", "preview_file": "Blockbench/Food/Chorizo/straight_chorizo_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "straight_chorizo_1to1_texture.png"], "tts_key": null}, {"id": "food_costilla", "name": "Costilla", "title": "Costilla (阿根廷横切牛排骨)", "tag": "镇店之宝 · Asado 灵魂", "desc": "传统阿根廷烤排骨（Asado de Tira），骨边肉香浓郁，脂肪经木炭慢烤融化，三分熟见血多汁，全熟骨肉分离。", "icon": "🥩", "category": "food", "folder_name": "Costilla", "model_file": "Blockbench/Food/Costilla/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/Food/Costilla/asado_1to1_texture.png", "preview_file": "Blockbench/Food/Costilla/asado_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "asado_1to1_texture.png", "clean_asado_1to1_texture.png"], "tts_key": null}, {"id": "food_matambre", "name": "Matambre", "title": "Matambre (牛腹肉 / 夹心肉排)", "tag": "薄嫩焦脆 · 肉汁饱满", "desc": "牛腹部特有的珍稀薄肉层，既可烤到全熟如黄油般软嫩，也可快速翻面做成三分熟极品。", "icon": "🥓", "category": "food", "folder_name": "Matambre", "model_file": "Blockbench/Food/Matambre/Matambre.fbx", "model_type": "fbx", "texture_file": "Blockbench/Food/Matambre/matambre_1to1_texture.png", "preview_file": "Blockbench/Food/Matambre/matambre_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "Matambre.fbx", "matambre_1to1_texture.png"], "tts_key": null}, {"id": "food_morcilla", "name": "Morcilla", "title": "Morcilla (阿根廷黑血肠)", "tag": "软糯浓郁 · 碳化能量", "desc": "黑油电池包般的经典血肠，外脆内糯，富含铁质与香料风味，是机器人与吃货娘的大爱。", "icon": "🥘", "category": "food", "folder_name": "Morcilla", "model_file": "Blockbench/Food/Morcilla/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/Food/Morcilla/morcilla_1to1_texture.png", "preview_file": "Blockbench/Food/Morcilla/morcilla_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "morcilla_1to1_texture.png"], "tts_key": null}, {"id": "food_pollo", "name": "Pollo", "title": "Pollo (秘制香烤鸡肉)", "tag": "金黄脆皮 · 低脂饱腹", "desc": "新鲜鸡肉经炭火洗礼，外皮金黄酥脆，肉质鲜嫩弹牙。是挑剔辣妹与呆毛吃货娘的心头好。", "icon": "🍗", "category": "food", "folder_name": "Pollo", "model_file": "Blockbench/Food/Pollo/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/Food/Pollo/pollo_1to1_texture.png", "preview_file": "Blockbench/Food/Pollo/pollo_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "pollo_1to1_texture.png"], "tts_key": null}, {"id": "buildings_brasero", "name": "Brasero", "title": "Brasero (引炭引火铁笼)", "tag": "炭火核心 · 生火源泉", "desc": "传统阿根廷烤肉架侧边的引火铁笼，木柴在此充分燃烧化为滚烫通红的木炭块，再用炭铲拨入烤架下方。", "icon": "🏮", "category": "buildings", "folder_name": "Brasero", "model_file": "Blockbench/建筑/Brasero/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/建筑/Brasero/brasero_1to1_texture.png", "preview_file": "Blockbench/建筑/Brasero/brasero_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "brasero_1to1_texture.png"], "tts_key": null}, {"id": "buildings_charcoalpytamid", "name": "CharCoalPytamid", "title": "CharCoal Pyramid (金字塔型木炭堆)", "tag": "燃料储备 · 纯正焦香", "desc": "整齐码放的纯天然硬木炭堆，为持续一整天的 Asado 盛宴提供持久而纯净的高温火力。", "icon": "⛰️", "category": "buildings", "folder_name": "CharCoalPytamid", "model_file": "Blockbench/建筑/CharCoalPytamid/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/建筑/CharCoalPytamid/pure_charcoal_1to1_texture.png", "preview_file": "Blockbench/建筑/CharCoalPytamid/pure_charcoal_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "pure_charcoal_1to1_texture.png"], "tts_key": null}, {"id": "buildings_mesa", "name": "Mesa", "title": "Mesa de Madera (原木料理长桌)", "tag": "案板台面 · 备餐盛宴", "desc": "厚重粗犷的实木料理操作台，用于切割牛排、撒粗盐与装盘大块肉品。", "icon": "🪵", "category": "buildings", "folder_name": "Mesa", "model_file": "Blockbench/建筑/Mesa/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/建筑/Mesa/wood_1to1_texture.png", "preview_file": "Blockbench/建筑/Mesa/wood_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "wood_1to1_texture.png"], "tts_key": null}, {"id": "buildings_parrilla", "name": "Parrilla", "title": "La Parrilla (阿根廷传统烤架)", "tag": "核心设施 · V型排油槽", "desc": "经典带滑轮升降装置与斜向 V 型导油槽的烤肉架，能够精准控制肉排与炭火的距离，避免油脂滴入起明火。", "icon": "🏭", "category": "buildings", "folder_name": "Parrilla", "model_file": "Blockbench/建筑/Parrilla/ArgentineParrilla.fbx", "model_type": "fbx", "texture_file": "Blockbench/建筑/Parrilla/parrilla_1to1_texture.png", "preview_file": "Blockbench/建筑/Parrilla/parrilla_1to1_texture.png", "all_files": ["ArgentineParrilla.fbx", "parrilla_1to1_texture.png"], "tts_key": null}, {"id": "buildings_烧红的木炭", "name": "烧红的木炭", "title": "烧红的木炭 (Glowing Charcoal)", "tag": "炽热纯炭 · 噬炭怪人至爱", "desc": "炉底烧到通体赤红、热浪滚滚的极品木炭，发出滋滋微光，温度高达数百摄氏度。", "icon": "🔥", "category": "buildings", "folder_name": "烧红的木炭", "model_file": "Blockbench/建筑/烧红的木炭/烧红的木炭.bbmodel", "model_type": "bbmodel", "texture_file": "Blockbench/建筑/烧红的木炭/烧红的木炭.png", "preview_file": "Blockbench/建筑/烧红的木炭/烧红的木炭.png", "all_files": ["烧红的木炭.bbmodel", "烧红的木炭.fbx", "烧红的木炭.png"], "tts_key": null}], "tts": {"Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）": {"short_name": "Baka_Bot_9000", "full_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/不满意/CN/Baka_Bot_9000_Angry_CN.wav", "subtitle": "警告！警告！检测到劣质燃料！人类，你的胆子真是肥嘟嘟的，准备启动自爆程序：三、二、一……", "tts_text": "警告！警告！检测到劣质燃料！人类，你的胆子，真是，肥嘟嘟的！准备启动自爆程序，三，二，一。", "voice": "zm_yunxi", "speed": 0.8, "pitch": 4.0, "timbre_mode": "机器人电音变声 (音调 +4.0)"}, "ES": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/不满意/ES/Baka_Bot_9000_Angry_ES.wav", "subtitle": "¡Error 404! ¡Combustible basura! ¡Não, não, amigão! ¡Iniciando autodestrucción!", "tts_text": "¡E-rror cuatro cero cuatro! ¡Combustible basura! ¡Niao, niao, a-mi-gáu! ¡Iniciando autodestrucción!", "voice": "em_alex", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}, "US": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/不满意/US/Baka_Bot_9000_Angry_US.wav", "subtitle": "Error 404! Trash detected! No, no, amigão! Formatting your hard drive in 3, 2, 1...", "tts_text": "Error four oh four! Trash detected! Nao, nao, a-mee-gow! Formatting your hard drive in three, two, one.", "voice": "am_michael", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/满意/CN/Baka_Bot_9000_Happy_CN.wav", "subtitle": "叮！充能百分之二百！CPU要爽到烧起来了！好喝到翘jiojio！", "tts_text": "叮！充能，百分之二百！C、P、U、要爽到烧起来了！好喝到，翘脚脚！", "voice": "zm_yunxi", "speed": 0.8, "pitch": 4.0, "timbre_mode": "机器人电音变声 (音调 +4.0)"}, "ES": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/满意/ES/Baka_Bot_9000_Happy_ES.wav", "subtitle": "¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando samba, amigão!", "tts_text": "¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando sam-ba, a-mi-gáu!", "voice": "em_alex", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}, "US": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/满意/US/Baka_Bot_9000_Happy_US.wav", "subtitle": "Ding! Power at 200 percent! My motherboard is doing a backflip! Good job, human!", "tts_text": "Ding! Power at two hundred percent! My motherboard is doing a backflip! Good job, human!", "voice": "am_michael", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}}}, "点餐 A": {"condition": "Morcilla + Well Done", "food": "Morcilla", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 A/CN/Baka_Bot_9000_Order_Morcilla_WellDone_CN.wav", "subtitle": "哔哔——电量不足。请投喂一根加热到全熟（Well Done）的“黑油电池包”（血肠）。完毕。", "tts_text": "哔、哔。电量不足。请投喂一根，加热到全熟的，黑油电池包，血肠。完毕。", "voice": "zm_yunxi", "speed": 0.8, "pitch": 4.0, "timbre_mode": "机器人电音变声 (音调 +4.0)"}, "ES": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 A/ES/Baka_Bot_9000_Order_Morcilla_WellDone_ES.wav", "subtitle": "Bip-bop. Batería baja. Solicito una batería negra de Morcilla en estado Well Done. Cambio.", "tts_text": "Bip, bop. Batería baja. Solicito una batería negra de, Mor-ci-sha, en estado güel dan. Cambio.", "voice": "em_alex", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}, "US": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 A/US/Baka_Bot_9000_Order_Morcilla_WellDone_US.wav", "subtitle": "Beep-boop. Low battery. Requesting one black battery of Well Done Morcilla. Over.", "tts_text": "Beep, boop. Low battery. Requesting one black battery of, Well Done Mor-see-yah. Over.", "voice": "am_michael", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}}}, "点餐 B": {"condition": "Morcilla + Burnt", "food": "Morcilla", "doneness": "Burnt", "languages": {"CN": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 B/CN/Baka_Bot_9000_Order_Morcilla_Burnt_CN.wav", "subtitle": "滋滋——系统过载！需要高阻值碳化材料！请将**血肠（Morcilla）烧焦成黑炭（Burnt）**后输入！", "tts_text": "滋、滋。系统过载！需要碳化材料！请将，血肠，烧焦成黑炭后输入！", "voice": "zm_yunxi", "speed": 0.8, "pitch": 4.0, "timbre_mode": "机器人电音变声 (音调 +4.0)"}, "ES": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 B/ES/Baka_Bot_9000_Order_Morcilla_Burnt_ES.wav", "subtitle": "Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una Morcilla quemada, nivel Burnt!", "tts_text": "Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una, Mor-ci-sha quemada, nivel Bernt!", "voice": "em_alex", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}, "US": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 B/US/Baka_Bot_9000_Order_Morcilla_Burnt_US.wav", "subtitle": "Bzzzt. Overload! Carbon resistor needed! Feed me a Burnt Morcilla sausage immediately!", "tts_text": "Bzzzt. Overload! Carbon resistor needed! Feed me a, Burnt Mor-see-yah sausage, immediately!", "voice": "am_michael", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}}}, "点餐 C": {"condition": "Chorizo + Raw", "food": "Chorizo", "doneness": "Raw", "languages": {"CN": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 C/CN/Baka_Bot_9000_Order_Chorizo_Raw_CN.wav", "subtitle": "叮！正在执行冷启动程序。请直接提供一根**未加热的全生香肠（Raw）**作为冷却液管道。", "tts_text": "叮！正在执行冷启动程序。请直接提供一根，未加热的，全生香肠，作为冷却管道。", "voice": "zm_yunxi", "speed": 0.8, "pitch": 4.0, "timbre_mode": "机器人电音变声 (音调 +4.0)"}, "ES": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 C/ES/Baka_Bot_9000_Order_Chorizo_Raw_ES.wav", "subtitle": "Ping. Iniciando arranque en frío. Entregue un tubo de Chorizo crudo, estado Raw, sin cocinar.", "tts_text": "Ping. Iniciando arranque en frío. Entregue un tubo de, Cho-ri-zo crudo, estado Ro, sin cocinar.", "voice": "em_alex", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}, "US": {"wav": "TTS/Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）/点餐 C/US/Baka_Bot_9000_Order_Chorizo_Raw_US.wav", "subtitle": "Ping. Cold boot sequence initiated. Provide one Raw Chorizo tube with zero thermal energy.", "tts_text": "Ping. Cold boot sequence initiated. Provide one, Raw Cho-ree-zo tube, with zero thermal energy.", "voice": "am_michael", "speed": 0.8, "pitch": 3.5, "timbre_mode": "机器人电音变声 (音调 +3.5)"}}}}}, "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）": {"short_name": "Don_Mateo", "full_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/不满意/CN/Don_Mateo_Angry_CN.wav", "subtitle": "这是人吃的东西吗？！牛看到都要流眼泪！你的胆子真是肥嘟嘟的，回炉重造三年吧！", "tts_text": "这是人吃的东西吗？！牛看到都要流眼泪！你的胆子真是肥嘟嘟的，回炉重造三年吧！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/不满意/ES/Don_Mateo_Angry_ES.wav", "subtitle": "¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Não, não, amigão, dedicate a otra cosa!", "tts_text": "¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Niao, niao, a-mi-gáu, dedicate a otra cosa!", "voice": "em_santa", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/不满意/US/Don_Mateo_Angry_US.wav", "subtitle": "What did you do to this poor cow?! No, no, amigão, close the shop right now!", "tts_text": "What did you do to this poor cow?! Nao, nao, a-mee-gow, close the shop right now!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/满意/CN/Don_Mateo_Happy_CN.wav", "subtitle": "嗯……外焦里嫩，肉汁饱满！算你小子有点东西，这波我给满分！", "tts_text": "嗯……外焦里嫩，肉汁饱满！算你小子有点东西，这波，我给满分！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/满意/ES/Don_Mateo_Happy_ES.wav", "subtitle": "Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.", "tts_text": "Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.", "voice": "em_santa", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/满意/US/Don_Mateo_Happy_US.wav", "subtitle": "Hmph... melts like butter! Not bad at all, kid. You earned my respect today.", "tts_text": "Hmph... melts like butter! Not bad at all, kid. You earned my respect today.", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Costilla + Medium", "food": "Costilla", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 A/CN/Don_Mateo_Order_Costilla_Medium_CN.wav", "subtitle": "听着小鬼，正宗的阿根廷烤肉讲究的是多汁！给我来一排五分熟的牛排骨（Medium），差一秒我就掀桌！", "tts_text": "听着小鬼，正宗的烤肉讲究的是多汁！给我来一排，五分熟的牛排骨，差一秒，我就掀桌！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 A/ES/Don_Mateo_Order_Costilla_Medium_ES.wav", "subtitle": "Escuchame pibe, dame una Costilla a punto Medium, jugosa. Si la secás, te cierro el boliche.", "tts_text": "Escuchame pibe, dame una Cos-ti-sha a punto Mí-dium, jugosa. Si la secás, te cierro el bo-li-che.", "voice": "em_santa", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 A/US/Don_Mateo_Order_Costilla_Medium_US.wav", "subtitle": "Listen up, kid! Give me Costilla ribs cooked Medium. Overcook it, and I'm flipping this grill!", "tts_text": "Listen up, kid! Give me Cos-tee-yah ribs cooked Medium. Overcook it, and I'm flipping this grill!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Matambre + Well Done", "food": "Matambre", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 B/CN/Don_Mateo_Order_Matambre_WellDone_CN.wav", "subtitle": "考考你的基本功！**牛腹肉（Matambre）很薄，给我烤到全熟（Well Done）**但绝对不能糊！", "tts_text": "考考你的基本功！牛腹肉很薄，给我烤到全熟，但绝对不能糊！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 B/ES/Don_Mateo_Order_Matambre_WellDone_ES.wav", "subtitle": "A ver si sabés asar... quiero un Matambre bien cocido, Well Done, pero que sea una manteca.", "tts_text": "A ver si sabés asar... quiero un Ma-tam-bre bien cocido, güel dan, pero que sea una manteca.", "voice": "em_santa", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 B/US/Don_Mateo_Order_Matambre_WellDone_US.wav", "subtitle": "Let's test your skill! Cook a Matambre to Well Done, tender like butter, not burnt!", "tts_text": "Let's test your skill! Cook a Ma-tam-bre to Well Done, tender like butter, not burnt!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Chorizo + Well Done", "food": "Chorizo", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 C/CN/Don_Mateo_Order_Chorizo_WellDone_CN.wav", "subtitle": "先来根前菜垫垫肚子！给我把香肠（Chorizo）烤到全熟（Well Done），表皮要滋滋冒油！", "tts_text": "先来根前菜垫垫肚子！给我把香肠烤到全熟，表皮要滋滋冒油！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 C/ES/Don_Mateo_Order_Chorizo_WellDone_ES.wav", "subtitle": "Para empezar el domingo, dame un Chorizo bien hecho, Well Done, que reviente de sabor.", "tts_text": "Para empezar el domingo, dame un Cho-ri-zo bien hecho, güel dan, que reviente de sabor.", "voice": "em_santa", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）/点餐 C/US/Don_Mateo_Order_Chorizo_WellDone_US.wav", "subtitle": "For starters, hand me a Well Done Chorizo sausage, sizzling hot and fully cooked!", "tts_text": "For starters, hand me a Well Done Cho-ree-zo sausage, sizzling hot and fully cooked!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！": {"short_name": "El", "full_folder": "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！", "actions": {"不满意": {"condition": "没烤焦（给了正常肉）", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/不满意/CN/El_Carbonero_Angry_CN.wav", "subtitle": "呸呸呸！这肉怎么还有水分？！一点煤球味都没有！你的胆子真是肥嘟嘟的，想饿死我吗？！", "tts_text": "呸呸呸！这肉怎么还有水分？！一点煤球味都没有！你的胆子真是肥嘟嘟的，想饿死我吗？！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/不满意/ES/El_Carbonero_Angry_ES.wav", "subtitle": "¡Puaj! ¡Esto no está quemado, qué asco! ¡Não, não, amigão! ¡Falta fuego!", "tts_text": "¡Puaj! ¡Esto no está quemado, qué asco! ¡Niao, niao, a-mi-gáu! ¡Falta fuego!", "voice": "em_alex", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/不满意/US/El_Carbonero_Angry_US.wav", "subtitle": "Blegh! Why is this meat edible and not burnt?! Disgusting! Nao, nao, amigão!", "tts_text": "Blegh! Why is this meat edible and not burnt?! Disgusting! Nao, nao, a-mee-gow!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/满意/CN/El_Carbonero_Happy_CN.wav", "subtitle": "咔嚓咔嚓……啊~！这纯正的致癌焦香！满嘴黑灰，真是香迷糊了老铁！", "tts_text": "咔嚓，咔嚓……啊！这纯正的煤球焦香！满嘴黑灰，真是香迷糊了老铁！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/满意/ES/El_Carbonero_Happy_ES.wav", "subtitle": "Crash, crash ¡Ufff, pura ceniza de calidad! ¡Uma delícia, amigão!", "tts_text": "¡Ufff, pura ceniza de calidad! ¡U-ma de-lí-sia, a-mi-gáu!", "voice": "em_alex", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/满意/US/El_Carbonero_Happy_US.wav", "subtitle": "Crunch, crunch Ahh! Pure carbon elements! My teeth are pitch black, 10 out of 10!", "tts_text": "Crunch, crunch! Ahh! Pure carbon elements! My teeth are pitch black, ten out of ten!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Costilla + Burnt", "food": "Costilla", "doneness": "Burnt", "languages": {"CN": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 A/CN/El_Carbonero_Order_Costilla_Burnt_CN.wav", "subtitle": "嘿嘿嘿！给我来一块彻底烤焦的牛排骨（Burnt）！越黑越好，没烤成黑炭我可不吃！", "tts_text": "嘿嘿嘿！给我来一块，彻底烤焦的牛排骨！越黑越好，没烤成黑炭我可不吃！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 A/ES/El_Carbonero_Order_Costilla_Burnt_ES.wav", "subtitle": "¡Jajaja! ¡Dame una Costilla totalmente quemada, bien Burnt! ¡Quiero comer ceniza!", "tts_text": "¡Ja-ja-ja! ¡Dame una Cos-ti-sha totalmente quemada, bien Bernt! ¡Quiero comer ceniza!", "voice": "em_alex", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 A/US/El_Carbonero_Order_Costilla_Burnt_US.wav", "subtitle": "Hehehe! Give me Burnt Costilla ribs! Pitch black! If it's not charcoal, I don't want it!", "tts_text": "He-he-he! Give me Burnt Cos-tee-yah ribs! Pitch black! If it's not charcoal, I don't want it!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Pollo + Burnt", "food": "Pollo", "doneness": "Burnt", "languages": {"CN": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 B/CN/El_Carbonero_Order_Pollo_Burnt_CN.wav", "subtitle": "听着！把那只鸡肉（Pollo）给我往死里烤到烧焦（Burnt）！我要嚼起来嘎嘣脆掉黑渣的！", "tts_text": "听着！把那只鸡肉，给我往死里烤到烧焦！我要嚼起来嘎嘣脆、掉黑渣的！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 B/ES/El_Carbonero_Order_Pollo_Burnt_ES.wav", "subtitle": "¡Escuchame! ¡Quiero un Pollo carbonizado, nivel Burnt! ¡Que haga ruido de carbón al morder!", "tts_text": "¡Escuchame! ¡Quiero un Po-sho carbonizado, nivel Bernt! ¡Que haga ruido de carbón al morder!", "voice": "em_alex", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 B/US/El_Carbonero_Order_Pollo_Burnt_US.wav", "subtitle": "Listen! Burn that Pollo chicken until it's Burnt to a crisp! I want crunchy black ash!", "tts_text": "Listen! Burn that Po-yo chicken until it's Burnt to a crisp! I want crunchy black ash!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Chorizo + Burnt (或直接铲一块木炭)", "food": "Chorizo", "doneness": "Burnt", "languages": {"CN": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 C/CN/El_Carbonero_Order_Chorizo_Burnt_CN.wav", "subtitle": "老板，炉子底下那块烧得通红的木炭卖不卖？不卖的话，给我把**香肠烤成焦炭（Burnt）**端上来！", "tts_text": "老板，炉子底下那块烧得通红的木炭卖不卖？不卖的话，给我把香肠烤成焦炭端上来！", "voice": "zm_yunyang", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 C/ES/El_Carbonero_Order_Chorizo_Burnt_ES.wav", "subtitle": "¡Che! ¿Me vendés el carbón rojo del fuego? ¡Si no, dame un Chorizo bien quemado, Burnt!", "tts_text": "¡Che! ¿Me vendés el carbón rojo del fuego? ¡Si no, dame un Cho-ri-zo bien quemado, Bernt!", "voice": "em_alex", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！/点餐 C/US/El_Carbonero_Order_Chorizo_Burnt_US.wav", "subtitle": "Hey! Can I eat the glowing red coal?! If not, give me a Burnt Chorizo sausage!", "tts_text": "Hey! Can I eat the glowing red coal?! If not, give me a Burnt Cho-ree-zo sausage!", "voice": "am_adam", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）": {"short_name": "Momo", "full_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/不满意/CN/Momo_Angry_CN.wav", "subtitle": "呜哇——！根本没法吃嘛！克扣美少女的口粮，你的胆子真是肥嘟嘟的！赔我精神损失费！", "tts_text": "呜哇！根本没法吃嘛！克扣美少女的口粮，你的胆子真是肥嘟嘟的！赔我精神损失费！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/不满意/ES/Momo_Angry_ES.wav", "subtitle": "¡Buaaa! ¡No se puede comer esto! ¡Não, não, amigão! ¡Con la comida no se juega!", "tts_text": "¡Buaaa! ¡No se puede comer esto! ¡Niao, niao, a-mi-gáu! ¡Con la comida no se juega!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/不满意/US/Momo_Angry_US.wav", "subtitle": "Waaah! I can't eat this! Your boldness is super chubby! Don't mess with my food!", "tts_text": "Waaah! I can't eat this! Your boldness is super chubby! Don't mess with my food!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/满意/CN/Momo_Happy_CN.wav", "subtitle": "哇呜~！肚皮圆滚滚啦，幸福得冒泡泡！老板你是全世界最棒的大厨！", "tts_text": "哇呜！肚皮圆滚滚啦，幸福得冒泡泡！老板，你是全世界最棒的大厨！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/满意/ES/Momo_Happy_ES.wav", "subtitle": "¡Yupi! ¡Panza llena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!", "tts_text": "¡Yu-pi! ¡Panza shena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/满意/US/Momo_Happy_US.wav", "subtitle": "Yay! My tummy is super round and happy now! You're the best chef in the whole universe!", "tts_text": "Yay! My tummy is super round and happy now! You're the best chef in the whole universe!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Pollo + Medium", "food": "Pollo", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 A/CN/Momo_Order_Pollo_Medium_CN.wav", "subtitle": "老板老板我快饿扁啦！来一份五分熟的嫩烤鸡肉（Medium），快点快点，口水流一地啦！", "tts_text": "老板老板，我快饿扁啦！来一份五分熟的嫩烤鸡肉，快点快点，口水流一地啦！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 A/ES/Momo_Order_Pollo_Medium_ES.wav", "subtitle": "¡Jefe, me muero de hambre! ¡Dame Pollo jugoso a punto Medium rapidito por favor! ¡Ñam, ñam!", "tts_text": "¡Jefe, me muero de hambre! ¡Dame Po-sho jugoso a punto Mí-dium rapidito por favor! ¡Ñam, ñam!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 A/US/Momo_Order_Pollo_Medium_US.wav", "subtitle": "Boss, I'm starving! Give me Medium Pollo chicken, super fast please! Drooling already!", "tts_text": "Boss, I'm starving! Give me Medium Po-yo chicken, super fast please! Drooling already!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Costilla + Rare", "food": "Costilla", "doneness": "Rare", "languages": {"CN": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 B/CN/Momo_Order_Costilla_Rare_CN.wav", "subtitle": "等不及全熟啦！那块**牛排骨（Costilla）只要烤到三分熟（Rare）**就快端上来给我炫嘴里吧！", "tts_text": "等不及全熟啦！那块牛排骨，只要烤到三分熟，就快端上来给我炫嘴里吧！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 B/ES/Momo_Order_Costilla_Rare_ES.wav", "subtitle": "¡No aguanto más! ¡Sacame esa Costilla jugosa en punto Rare ya mismo que me la como toda!", "tts_text": "¡No aguanto más! ¡Sacame esa Cos-ti-sha jugosa en punto Reir ya mismo que me la como toda!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 B/US/Momo_Order_Costilla_Rare_US.wav", "subtitle": "I can't wait anymore! Just cook that Costilla to Rare and throw it into my mouth!", "tts_text": "I can't wait anymore! Just cook that Cos-tee-yah to Rare and throw it into my mouth!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Morcilla + Well Done", "food": "Morcilla", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 C/CN/Momo_Order_Morcilla_WellDone_CN.wav", "subtitle": "吸溜~ 今天想吃软糯糯的血肠！给我来一根全熟的烤血肠（Well Done），我要一口吞！", "tts_text": "吸溜~ 今天想吃软糯糯的血肠！给我来一根，全熟的烤血肠，我要一口吞！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 C/ES/Momo_Order_Morcilla_WellDone_ES.wav", "subtitle": "¡Qué rico olor! Hoy quiero una Morcilla calentita bien cocida, Well Done, ¡de un bocado!", "tts_text": "¡Qué rico olor! Hoy quiero una Mor-ci-sha calentita bien cocida, güel dan, ¡de un bocado!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）/点餐 C/US/Momo_Order_Morcilla_WellDone_US.wav", "subtitle": "Smells so good! Today I want a hot Well Done Morcilla sausage to swallow in one bite!", "tts_text": "Smells so good! Today I want a hot Well Done Mor-see-yah sausage to swallow in one bite!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）": {"short_name": "Rikka", "full_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/不满意/CN/Rikka_Angry_CN.wav", "subtitle": "竟敢用这种劣质祭品愚弄暗黑女王？你的胆子真是肥嘟嘟的！受死吧！", "tts_text": "竟敢用这种劣质祭品愚弄本女王？你、的、胆、子、真、是、肥、嘟、嘟、的！受死吧！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/不满意/ES/Rikka_Angry_ES.wav", "subtitle": "¿Me das este sacrificio patético? ¡Não, não, amigão! ¡Sufrirás mi ira!", "tts_text": "¿Me das este sacrificio patético? ¡Niao, niao, a-mi-gáu! ¡Sufrirás mi ira!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/不满意/US/Rikka_Angry_US.wav", "subtitle": "You dare mock the Dark Queen with this?! Your boldness is fat and chubby! Be gone!", "tts_text": "You dare mock the Dark Queen with this?! Your boldness is fat and chubby! Be gone!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/满意/CN/Rikka_Happy_CN.wav", "subtitle": "唔……这股庞大的暗黑魔力在体内涌动！干得漂亮，今天就不封印你了，泰裤辣！", "tts_text": "唔……这股庞大的暗黑魔力在体内涌动！干得漂亮，今天就不封印你了，太酷啦！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/满意/ES/Rikka_Happy_ES.wav", "subtitle": "¡Qué poder oscuro tan delicioso! Hoy perdonaré tu vida, ¡sos crack, amigão!", "tts_text": "¡Qué poder oscuro tan delicioso! Hoy perdonaré tu vida, ¡sos crak, a-mi-gáu!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/满意/US/Rikka_Happy_US.wav", "subtitle": "Such overwhelming dark flavor! I shall spare your soul today. Absolute cinema!", "tts_text": "Such overwhelming dark flavor! I shall spare your soul today. Absolute cinema!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Costilla + Rare", "food": "Costilla", "doneness": "Rare", "languages": {"CN": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 A/CN/Rikka_Order_Costilla_Rare_CN.wav", "subtitle": "契约者！吾之右眼渴求着“淌着暗黑魔血的排骨”！给我一份三分熟的牛排骨！", "tts_text": "契约者！吾之右眼，渴求着淌着暗黑魔血的排骨！给我一份，三分熟的，牛排骨！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 A/ES/Rikka_Order_Costilla_Rare_ES.wav", "subtitle": "¡Mortal! Mi ojo sellado exige sangre. ¡Dame una Costilla jugosa, bien Rare!", "tts_text": "¡Mortal! Mi ojo se-sha-do exige sangre. ¡Dame una Cos-ti-sha jugosa, punto Reir!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 A/US/Rikka_Order_Costilla_Rare_US.wav", "subtitle": "Mortal! My sealed eye craves dark blood! Give me Rare Costilla ribs!", "tts_text": "Mortal! My sealed eye craves dark blood! Give me Rare Cos-tee-yah ribs!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Morcilla + Medium", "food": "Morcilla", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 B/CN/Rikka_Order_Morcilla_Medium_CN.wav", "subtitle": "哼，今日需要补充暗影魔力，把那根“暗黑凝血魔肠”烤到五分熟献上来，要血肠！", "tts_text": "哼，今日需要补充暗影魔力，把那根暗黑凝血魔肠，烤到五分熟献上来！要血肠！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 B/ES/Rikka_Order_Morcilla_Medium_ES.wav", "subtitle": "Necesito maná oscuro. ¡Entrégame una Morcilla a punto Medium de inmediato!", "tts_text": "Necesito maná oscuro. ¡Entrégame una Mor-ci-sha a punto Mí-dium de inmediato!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 B/US/Rikka_Order_Morcilla_Medium_US.wav", "subtitle": "I require shadow mana! Bring me a Medium cooked Morcilla blood sausage at once!", "tts_text": "I require shadow mana! Bring me a Medium cooked Mor-see-yah blood sausage at once!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Matambre + Rare", "food": "Matambre", "doneness": "Rare", "languages": {"CN": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 C/CN/Rikka_Order_Matambre_Rare_CN.wav", "subtitle": "听见深渊的呼唤了吗？那是三分熟的牛腹肉在咆哮！不准烤老了，凡人！", "tts_text": "听见深渊的呼唤了吗？那是，三分熟的牛腹肉，在咆哮！不准烤老了，凡人！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 C/ES/Rikka_Order_Matambre_Rare_ES.wav", "subtitle": "¿Oís el abismo? ¡Exijo un Matambre bien jugoso, nivel Rare, sin pasar de cocción!", "tts_text": "¿Oís el abismo? ¡Exijo un Ma-tam-bre bien jugoso, nivel Reir, sin pasar de cocción!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）/点餐 C/US/Rikka_Order_Matambre_Rare_US.wav", "subtitle": "Do you hear the abyss?! I demand a Rare Matambre flank steak, still bleeding!", "tts_text": "Do you hear the abyss?! I demand a Rare Ma-tam-bre flank steak, still bleeding!", "voice": "af_bella", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）": {"short_name": "Sakura_Gyaruo", "full_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/不满意/CN/Sakura_Gyaruo_Angry_CN.wav", "subtitle": "救命啊家人们谁懂啊！端上来这种东西，你的胆子真是肥嘟嘟的，退钱！", "tts_text": "救命啊，家人们谁懂啊！端上来这种东西，你的胆子真是肥嘟嘟的！退钱！", "voice": "zf_xiaoyi", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/不满意/ES/Sakura_Gyaruo_Angry_ES.wav", "subtitle": "¡Ay, por favor, qué horror! ¡Não, não, amigão! ¡Me arruinaste el día, devolveme la plata!", "tts_text": "¡Ay, por favor, qué horror! ¡Niao, niao, a-mi-gáu! ¡Me arruinaste el día, devolveme la plata!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/不满意/US/Sakura_Gyaruo_Angry_US.wav", "subtitle": "Ew, gross! Who let you cook?! Your audacity is so chubby! Refund, now!", "tts_text": "Ew, gross! Who let you cook?! Your audacity is so fat and chubby! Refund, now!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/满意/CN/Sakura_Gyaruo_Happy_CN.wav", "subtitle": "哇塞，绝绝子！这色泽拍照超级出片，今天也是美美吃肉的一天呢~", "tts_text": "哇塞，绝绝子！这色泽拍照超级出片，今天也是美美吃肉的一天呢！", "voice": "zf_xiaoyi", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/满意/ES/Sakura_Gyaruo_Happy_ES.wav", "subtitle": "¡Ay, re lindo! Va directo para mis historias. ¡Gracias, bombón!", "tts_text": "¡Ay, re lindo! Va directo para mis historias. ¡Gracias, bombón!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/满意/US/Sakura_Gyaruo_Happy_US.wav", "subtitle": "OMG, literally slayed! This is going straight to my stories! Love ya!", "tts_text": "Oh-em-gee, literally slayed! This is going straight to my stories! Love ya!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Pollo + Well Done", "food": "Pollo", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 A/CN/Sakura_Gyaruo_Order_Pollo_WellDone_CN.wav", "subtitle": "哈喽~ 本小姐正在减脂期呢，来一份全熟的烤鸡肉（Well Done），不准夹生也不准烤黑哦！", "tts_text": "哈喽~ 本小姐正在减脂期呢，来一份全熟的烤鸡肉，不准夹生，也不准烤黑哦！", "voice": "zf_xiaoyi", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 A/ES/Sakura_Gyaruo_Order_Pollo_WellDone_ES.wav", "subtitle": "¡Holis! Estoy cuidando la línea, dame Pollo bien cocido, Well Done, cero crudo y cero quemado.", "tts_text": "¡Ho-lis! Estoy cuidando la línea, dame Po-sho bien cocido, güel dan, cero crudo y cero quemado.", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 A/US/Sakura_Gyaruo_Order_Pollo_WellDone_US.wav", "subtitle": "Totes hello! I'm on a diet, give me Well Done Pollo chicken! No pink meat and zero char!", "tts_text": "Totes hello! I'm on a diet, give me Well Done Po-yo chicken! No pink meat and zero char!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Matambre + Well Done", "food": "Matambre", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 B/CN/Sakura_Gyaruo_Order_Matambre_WellDone_CN.wav", "subtitle": "哎呀，看到血丝人家会晕倒啦！给我把那块牛腹肉烤到全熟（Well Done），要拍美美的照片呢！", "tts_text": "哎呀，看到血丝人家会晕倒啦！给我把那块牛腹肉，烤到全熟，要拍美美的照片呢！", "voice": "zf_xiaoyi", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 B/ES/Sakura_Gyaruo_Order_Matambre_WellDone_ES.wav", "subtitle": "¡Ay, si veo sangre me desmayo! Dame un Matambre bien hecho, Well Done, para mi Instagram.", "tts_text": "¡Ay, si veo sangre me desmayo! Dame un Ma-tam-bre bien hecho, güel dan, para mi Ins-ta-gram.", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 B/US/Sakura_Gyaruo_Order_Matambre_WellDone_US.wav", "subtitle": "Ew, blood makes me dizzy! Give me a Well Done Matambre, gotta look pretty for my feed!", "tts_text": "Ew, blood makes me dizzy! Give me a Well Done Ma-tam-bre, gotta look pretty for my feed!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Chorizo + Medium", "food": "Chorizo", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 C/CN/Sakura_Gyaruo_Order_Chorizo_Medium_CN.wav", "subtitle": "今天偷偷放纵一下下~ 来一根爆汁的五分熟香肠（Medium），敢烤焦我就发小红书避雷你！", "tts_text": "今天偷偷放纵一下下~ 来一根爆汁的，五分熟香肠，敢烤焦我就发小红书避雷你！", "voice": "zf_xiaoyi", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 C/ES/Sakura_Gyaruo_Order_Chorizo_Medium_ES.wav", "subtitle": "Hoy es mi permitido, ¿sabés? Dame un Chorizo jugoso a punto Medium, o te escracho en redes.", "tts_text": "Hoy es mi permitido, ¿sabés? Dame un Cho-ri-zo jugoso a punto Mí-dium, o te escracho en redes.", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）/点餐 C/US/Sakura_Gyaruo_Order_Chorizo_Medium_US.wav", "subtitle": "Cheat day today! Give me a juicy Medium Chorizo, burn it and I'm canceling you online!", "tts_text": "Cheat day today! Give me a juicy Medium Cho-ree-zo, burn it and I'm canceling you online!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！": {"short_name": "Uga_Chan", "full_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！", "actions": {"不满意": {"condition": "烤太熟了", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/不满意/CN/Uga_Chan_Angry_CN.wav", "subtitle": "呜哇！肉都烫死了，咬不动！破坏大自然恩赐，你的胆子真是肥嘟嘟的！拿棒子敲你哦！", "tts_text": "呜哇！肉都烫死了，咬不动！破坏大自然恩赐，你的胆子真是肥嘟嘟的！拿棒子敲你哦！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/不满意/ES/Uga_Chan_Angry_ES.wav", "subtitle": "¡Buaaa! ¡Mataste la carne con fuego! ¡Não, não, amigão! ¡Te voy a dar garrotazo!", "tts_text": "¡Buaaa! ¡Mataste la carne con fuego! ¡Niao, niao, a-mi-gáu! ¡Te voy a dar ga-rro-tazo!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/不满意/US/Uga_Chan_Angry_US.wav", "subtitle": "Waaah! You killed the meat with fire! Your boldness is chubby! Uga smash you with club!", "tts_text": "Waaah! You killed the meat with fire! Your boldness is fat and chubby! Uga smash you with club!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/满意/CN/Uga_Chan_Happy_CN.wav", "subtitle": "嗷呜嗷呜！鲜血淋漓，充满大自然的野性力量！乌嘎认你做部落大酋长！", "tts_text": "嗷呜，嗷呜！鲜血淋漓，充满大自然的野性力量！乌嘎认你做部落大酋长！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/满意/ES/Uga_Chan_Happy_ES.wav", "subtitle": "¡Ñam, ñam! ¡Pura vida salvaje! ¡Vos ser gran jefe de la tribu, amigão!", "tts_text": "¡Ñam, ñam! ¡Pura vida salvaje! ¡Vos ser gran jefe de la tribu, a-mi-gáu!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/满意/US/Uga_Chan_Happy_US.wav", "subtitle": "Nom nom! Fresh blood and wild power! You are Big Chief of my tribe now!", "tts_text": "Nom, nom! Fresh blood and wild power! You are Big Chief of my tribe now!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Costilla + Raw", "food": "Costilla", "doneness": "Raw", "languages": {"CN": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 A/CN/Uga_Chan_Order_Costilla_Raw_CN.wav", "subtitle": "乌嘎！火是坏文明！不准放到炉子上！直接把那块**全生的牛排骨（Raw）**丢给我啃！吼！", "tts_text": "乌嘎！火是坏文明！不准放到炉子上！直接把那块，全生的牛排骨，丢给我啃！吼！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 A/ES/Uga_Chan_Order_Costilla_Raw_ES.wav", "subtitle": "¡Uga, uga! ¡Fuego malo! ¡No toques la parrilla, dame esa Costilla totalmente cruda, Raw!", "tts_text": "¡U-ga, u-ga! ¡Fuego malo! ¡No toques la pa-rri-sha, dame esa Cos-ti-sha totalmente cruda, Ro!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 A/US/Uga_Chan_Order_Costilla_Raw_US.wav", "subtitle": "Uga! Fire is bad! Don't touch the grill! Throw me that Raw Costilla rib, completely uncooked!", "tts_text": "Uga! Fire is bad! Don't touch the grill! Throw me that Raw Cos-tee-yah rib, completely uncooked!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Pollo + Raw", "food": "Pollo", "doneness": "Raw", "languages": {"CN": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 B/CN/Uga_Chan_Order_Pollo_Raw_CN.wav", "subtitle": "嘎呜！乌嘎今天要捕猎小鸟！给我来一份全生的鸡肉（Raw），一秒钟都不准烤！", "tts_text": "嘎呜！乌嘎今天要捕猎小鸟！给我来一份，全生的鸡肉，一秒钟都不准烤！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 B/ES/Uga_Chan_Order_Pollo_Raw_ES.wav", "subtitle": "¡Grrr! ¡Uga quiere cazar! ¡Dame Pollo crudo, nivel Raw, directo de la heladera!", "tts_text": "¡Grrr! ¡U-ga quiere cazar! ¡Dame Po-sho crudo, nivel Ro, directo de la heladera!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 B/US/Uga_Chan_Order_Pollo_Raw_US.wav", "subtitle": "Grrr! Uga wants fresh prey! Give me Raw Pollo chicken, zero seconds on the fire!", "tts_text": "Grrr! Uga wants fresh prey! Give me Raw Po-yo chicken, zero seconds on the fire!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Matambre + Rare", "food": "Matambre", "doneness": "Rare", "languages": {"CN": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 C/CN/Uga_Chan_Order_Matambre_Rare_CN.wav", "subtitle": "嗅嗅……今天想试试人类说的“温热的猎物”，把牛腹肉烤到三分熟（Rare），见血就拿下来！", "tts_text": "嗅嗅……今天想试试人类说的，温热的猎物。把牛腹肉烤到三分熟，见血就拿下来！", "voice": "zf_xiaoni", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 C/ES/Uga_Chan_Order_Matambre_Rare_ES.wav", "subtitle": "Sniff, sniff Hoy probar comida tibia. ¡Dame Matambre apenas vuelta y vuelta, nivel Rare!", "tts_text": "Hoy probar comida tibia. ¡Dame Ma-tam-bre apenas vuelta y vuelta, nivel Reir!", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！/点餐 C/US/Uga_Chan_Order_Matambre_Rare_US.wav", "subtitle": "Sniff Today Uga try warm prey! Give me Rare Matambre, barely touched by fire!", "tts_text": "Today Uga try warm prey! Give me Rare Ma-tam-bre, barely touched by fire!", "voice": "af_sarah", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}, "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）": {"short_name": "Yuki", "full_folder": "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）", "actions": {"不满意": {"condition": "烤错食材/熟度", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/不满意/CN/Yuki_Angry_CN.wav", "subtitle": "难吃……你的胆子真是肥嘟嘟的，连我都能欺负，尊嘟假嘟？", "tts_text": "难吃……你的胆子真是肥嘟嘟的，连我都能欺负，尊嘟假嘟？", "voice": "zf_xiaoxiao", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/不满意/ES/Yuki_Angry_ES.wav", "subtitle": "Feo... Não, não, amigão, esto es tristeza pura.", "tts_text": "Feo... Niao, niao, a-mi-gáu, esto es tristeza pura.", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/不满意/US/Yuki_Angry_US.wav", "subtitle": "Bad... No, no, amigão. Why are you bullying my stomach?", "tts_text": "Bad... Nao, nao, a-mee-gow. Why are you bullying my stomach?", "voice": "af_sky", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "满意": {"condition": "符合订单", "food": null, "doneness": null, "languages": {"CN": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/满意/CN/Yuki_Happy_CN.wav", "subtitle": "好吃。心巴被击中了……给你比个大拇哥。", "tts_text": "好吃。心巴，被击中了……给你比个，大拇哥。", "voice": "zf_xiaoxiao", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/满意/ES/Yuki_Happy_ES.wav", "subtitle": "Rico... Mi corazón hace tuki-tuki. Muchas gracias.", "tts_text": "Rico... Mi corazón hace tu-ki tu-ki. Muchas gracias.", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/满意/US/Yuki_Happy_US.wav", "subtitle": "Yummy... My heart goes doki-doki. Thumbs up for you.", "tts_text": "Yummy... My heart goes do-ki do-ki. Thumbs up for you.", "voice": "af_sky", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 A": {"condition": "Chorizo + Medium", "food": "Chorizo", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 A/CN/Yuki_Order_Chorizo_Medium_CN.wav", "subtitle": "那个……请给我一根五分熟的烤香肠。刚刚好就行……盯——", "tts_text": "那个……请给我一根，五分熟的，烤香肠。刚刚好就行……盯——", "voice": "zf_xiaoxiao", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 A/ES/Yuki_Order_Chorizo_Medium_ES.wav", "subtitle": "Este... un Chorizo a punto Medium, por favor... mirada fija", "tts_text": "Este... un Cho-ri-zo a punto Mí-dium, por favor...", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 A/US/Yuki_Order_Chorizo_Medium_US.wav", "subtitle": "Um... one Medium Chorizo sausage, please... stares silently", "tts_text": "Um... one Medium Cho-ree-zo sausage, please...", "voice": "af_sky", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 B": {"condition": "Pollo + Well Done", "food": "Pollo", "doneness": "WellDone", "languages": {"CN": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 B/CN/Yuki_Order_Pollo_WellDone_CN.wav", "subtitle": "肚子饿了……想要一份全熟的烤鸡肉。没熟透的话，会肚子痛的……", "tts_text": "肚子饿了……想要一份，全熟的，烤鸡肉。没熟透的话，会肚子痛的……", "voice": "zf_xiaoxiao", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 B/ES/Yuki_Order_Pollo_WellDone_ES.wav", "subtitle": "Tengo hambre... quiero Pollo bien cocido, Well Done, para no enfermarme...", "tts_text": "Tengo hambre... quiero Po-sho bien cocido, güel dan, para no enfermarme...", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 B/US/Yuki_Order_Pollo_WellDone_US.wav", "subtitle": "I'm hungry... I want Well Done Pollo chicken, so my tummy doesn't hurt...", "tts_text": "I'm hungry... I want Well Done Po-yo chicken, so my tummy doesn't hurt...", "voice": "af_sky", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}, "点餐 C": {"condition": "Matambre + Medium", "food": "Matambre", "doneness": "Medium", "languages": {"CN": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 C/CN/Yuki_Order_Matambre_Medium_CN.wav", "subtitle": "老板……今天想吃五分熟的牛腹肉。嫩一点的，谢谢……", "tts_text": "老板……今天想吃，五分熟的，牛腹肉。嫩一点的，谢谢……", "voice": "zf_xiaoxiao", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "ES": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 C/ES/Yuki_Order_Matambre_Medium_ES.wav", "subtitle": "Disculpe... hoy quiero un Matambre a punto Medium, bien tiernito...", "tts_text": "Disculpe... hoy quiero un Ma-tam-bre a punto Mí-dium, bien tiernito...", "voice": "ef_dora", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}, "US": {"wav": "TTS/Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）/点餐 C/US/Yuki_Order_Matambre_Medium_US.wav", "subtitle": "Excuse me... I'd like a Medium Matambre meat today, soft and tender...", "tts_text": "Excuse me... I'd like a Medium Ma-tam-bre meat today, soft and tender...", "voice": "af_sky", "speed": 0.8, "pitch": 0.0, "timbre_mode": "原声音色 (统一慢速 0.8)"}}}}}}};
+  </script>
+
+  <!-- 前端交互与 3D 渲染控制逻辑 -->
+  <script>
+    let currentCategory = 'characters';
+    let currentModel = null;
+    let autoRotate = true;
+    let wireframeMode = false;
+    let currentActiveVoiceBtn = null;
+
+    // Three.js 全局对象
+    let scene, camera, renderer, controls, currentMeshGroup = null;
+    const canvas = document.getElementById('three-canvas');
+    const modelViewer = document.getElementById('main-model-viewer');
+    const audioPlayer = document.getElementById('tts-audio-player');
+
+    // 初始化 Three.js 场景
+    function initThreeScene() {
+      scene = new THREE.Scene();
+      
+      const rect = canvas.getBoundingClientRect();
+      camera = new THREE.PerspectiveCamera(45, rect.width / rect.height, 0.1, 8000);
+      camera.position.set(25, 20, 35);
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(rect.width, rect.height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.autoRotate = autoRotate;
+      controls.autoRotateSpeed = 2.0;
+
+      // 灯光设置
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xfff5ea, 1.2);
+      dirLight.position.set(30, 45, 25);
+      dirLight.castShadow = true;
+      scene.add(dirLight);
+
+      const backLight = new THREE.DirectionalLight(0x38bdf8, 0.5);
+      backLight.position.set(-25, 15, -25);
+      scene.add(backLight);
+
+      // 地面网格辅助
+      const grid = new THREE.GridHelper(50, 25, 0x38bdf8, 0x1e293b);
+      grid.position.y = -0.1;
+      scene.add(grid);
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function onWindowResize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(rect.width, rect.height);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // 解析 Blockbench .bbmodel 专属体素几何引擎
+    async function loadBBModelFile(url, textureUrl) {
+      const loader = document.getElementById('stage-loader');
+      loader.classList.add('show');
+      
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (currentMeshGroup) {
+          scene.remove(currentMeshGroup);
+        }
+
+        currentMeshGroup = new THREE.Group();
+        const resWidth = (data.resolution && data.resolution.width) ? data.resolution.width : 64;
+        const resHeight = (data.resolution && data.resolution.height) ? data.resolution.height : 64;
+
+        // 纹理加载（支持 embedded base64 或外部 png）
+        let texture;
+        if (data.textures && data.textures.length > 0 && data.textures[0].source && data.textures[0].source.startsWith('data:')) {
+          texture = new THREE.TextureLoader().load(data.textures[0].source);
+        } else if (textureUrl) {
+          texture = new THREE.TextureLoader().load(textureUrl);
+        } else {
+          texture = new THREE.Texture();
+        }
+        
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.NearestFilter;
+
+        const material = new THREE.MeshStandardMaterial({
+          map: texture,
+          transparent: true,
+          alphaTest: 0.1,
+          roughness: 0.8,
+          metalness: 0.1,
+          wireframe: wireframeMode
+        });
+
+        // 构建每个 Box Element
+        if (data.elements) {
+          data.elements.forEach(elem => {
+            if (elem.export === false) return;
+            const from = elem.from || [0, 0, 0];
+            const to = elem.to || [1, 1, 1];
+            const dx = Math.abs(to[0] - from[0]);
+            const dy = Math.abs(to[1] - from[1]);
+            const dz = Math.abs(to[2] - from[2]);
+
+            const geom = new THREE.BoxGeometry(dx, dy, dz);
+            
+            // 自定义 UV 映射
+            if (elem.faces) {
+              const uvAttr = geom.attributes.uv;
+              // Three.js Box faces: 0,1 (+X east), 2,3 (-X west), 4,5 (+Y up), 6,7 (-Y down), 8,9 (+Z south), 10,11 (-Z north)
+              const faceOrder = ['east', 'west', 'up', 'down', 'south', 'north'];
+              
+              faceOrder.forEach((fName, fIdx) => {
+                const fData = elem.faces[fName];
+                if (fData && fData.uv) {
+                  const [u1, v1, u2, v2] = fData.uv;
+                  const uMin = u1 / resWidth;
+                  const uMax = u2 / resWidth;
+                  const vMin = 1.0 - (v2 / resHeight);
+                  const vMax = 1.0 - (v1 / resHeight);
+
+                  const base = fIdx * 4;
+                  uvAttr.setXY(base, uMin, vMax);
+                  uvAttr.setXY(base + 1, uMax, vMax);
+                  uvAttr.setXY(base + 2, uMin, vMin);
+                  uvAttr.setXY(base + 3, uMax, vMin);
+                }
+              });
+              uvAttr.needsUpdate = true;
+            }
+
+            const mesh = new THREE.Mesh(geom, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            const cx = (from[0] + to[0]) / 2;
+            const cy = (from[1] + to[1]) / 2;
+            const cz = (from[2] + to[2]) / 2;
+
+            if (elem.rotation && (elem.rotation[0] || elem.rotation[1] || elem.rotation[2])) {
+              const pivot = new THREE.Group();
+              const ox = elem.origin ? elem.origin[0] : cx;
+              const oy = elem.origin ? elem.origin[1] : cy;
+              const oz = elem.origin ? elem.origin[2] : cz;
+
+              pivot.position.set(ox, oy, oz);
+              pivot.rotation.x = THREE.MathUtils.degToRad(elem.rotation[0] || 0);
+              pivot.rotation.y = THREE.MathUtils.degToRad(elem.rotation[1] || 0);
+              pivot.rotation.z = THREE.MathUtils.degToRad(elem.rotation[2] || 0);
+
+              mesh.position.set(cx - ox, cy - oy, cz - oz);
+              pivot.add(mesh);
+              currentMeshGroup.add(pivot);
+            } else {
+              mesh.position.set(cx, cy, cz);
+              currentMeshGroup.add(mesh);
+            }
+          });
+        }
+
+        // 模型自动居中与缩放适配
+        const box = new THREE.Box3().setFromObject(currentMeshGroup);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        currentMeshGroup.position.x = -center.x;
+        currentMeshGroup.position.y = -box.min.y;
+        currentMeshGroup.position.z = -center.z;
+
+        scene.add(currentMeshGroup);
+
+        const maxDim = Math.max(size.x, size.y, size.z, 10);
+        camera.position.set(maxDim * 1.5, maxDim * 1.2, maxDim * 1.8);
+        controls.target.set(0, size.y * 0.5, 0);
+        controls.update();
+
+      } catch (err) {
+        console.error("加载 .bbmodel 失败:", err);
+      } finally {
+        loader.classList.remove('show');
+      }
+    }
+
+    // 加载 FBX 格式模型
+    function loadFBXFile(url, textureUrl) {
+      const loader = document.getElementById('stage-loader');
+      loader.classList.add('show');
+
+      if (currentMeshGroup) {
+        scene.remove(currentMeshGroup);
+      }
+
+      const fbxLoader = new THREE.FBXLoader();
+      fbxLoader.load(url, (object) => {
+        currentMeshGroup = object;
+        
+        let texture = null;
+        if (textureUrl) {
+          texture = new THREE.TextureLoader().load(textureUrl);
+          texture.magFilter = THREE.NearestFilter;
+          texture.minFilter = THREE.NearestFilter;
+        }
+
+        object.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            if (texture) {
+              child.material = new THREE.MeshStandardMaterial({
+                map: texture,
+                roughness: 0.85,
+                metalness: 0.05,
+                side: THREE.DoubleSide,
+                wireframe: wireframeMode
+              });
+            } else if (child.material) {
+              if (Array.isArray(child.material)) {
+                child.material.forEach(m => {
+                  m.side = THREE.DoubleSide;
+                  m.wireframe = wireframeMode;
+                });
+              } else {
+                child.material.side = THREE.DoubleSide;
+                child.material.wireframe = wireframeMode;
+              }
+            }
+          }
+        });
+
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        
+        object.position.x = -center.x;
+        object.position.y = -box.min.y;
+        object.position.z = -center.z;
+
+        scene.add(object);
+
+        const maxDim = Math.max(size.x, size.y, size.z, 10);
+        camera.near = Math.min(0.5, maxDim / 100);
+        camera.far = Math.max(8000, maxDim * 25);
+        camera.updateProjectionMatrix();
+
+        camera.position.set(maxDim * 1.5, maxDim * 1.1, maxDim * 1.6);
+        controls.target.set(0, size.y * 0.45, 0);
+        controls.maxDistance = maxDim * 12;
+        controls.update();
+
+        loader.classList.remove('show');
+      }, undefined, (err) => {
+        console.error("加载 FBX 失败:", err);
+        loader.classList.remove('show');
+      });
+    }
+
+    // 切换 3D 展示模型
+    function selectModel(modelId) {
+      const model = GALLERY_DATA.models.find(m => m.id === modelId);
+      if (!model) return;
+      currentModel = model;
+
+      // 更新卡片激活态
+      document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById('card_' + model.id);
+      if (activeCard) activeCard.classList.add('active');
+
+      // 更新舞台标题与描述
+      document.getElementById('stage-model-title').innerHTML = `${model.icon} ${model.title}`;
+      document.getElementById('stage-model-desc').textContent = model.desc || model.tag || '';
+      document.getElementById('stage-format-text').textContent = `格式: .${model.model_type.toUpperCase()} | 贴图: ${model.texture_file ? '已绑定' : '内置'}`;
+
+      // 3D 渲染器分发
+      if (model.model_type === 'glb' || model.model_type === 'gltf') {
+        // Google model-viewer 引擎
+        canvas.style.display = 'none';
+        modelViewer.style.display = 'block';
+        modelViewer.src = model.model_file;
+      } else {
+        // Three.js 引擎 (支持 .bbmodel 与 .fbx)
+        modelViewer.style.display = 'none';
+        canvas.style.display = 'block';
+        if (model.model_type === 'bbmodel') {
+          loadBBModelFile(model.model_file, model.texture_file);
+        } else if (model.model_type === 'fbx') {
+          loadFBXFile(model.model_file, model.texture_file);
+        }
+      }
+
+      // 更新右侧控制台
+      renderConsolePanel(model);
+    }
+
+    // 渲染右侧面板（角色 TTS 控制台 或 食物/建筑材质卡片）
+    function renderConsolePanel(model) {
+      const consoleContainer = document.getElementById('console-scroll-content');
+      const consoleTitle = document.getElementById('console-panel-title');
+      const consoleBadge = document.getElementById('console-mode-badge');
+
+      if (model.category === 'characters') {
+        consoleTitle.innerHTML = `<span>🎙️</span> ${model.name} 专属语音`;
+        consoleBadge.textContent = 'KOKORO 0.8x 原声';
+        consoleBadge.style.color = 'var(--accent-green)';
+
+        const ttsInfo = model.tts_key ? GALLERY_DATA.tts[model.tts_key] : null;
+
+        if (!ttsInfo || !ttsInfo.actions || Object.keys(ttsInfo.actions).length === 0) {
+          consoleContainer.innerHTML = `
+            <div class="character-profile-card">
+              <div class="profile-top">
+                <span class="profile-name">${model.title}</span>
+                <span class="profile-tag">${model.tag}</span>
+              </div>
+              <p class="profile-desc">${model.desc}</p>
+            </div>
+            <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+              <div style="font-size: 32px; margin-bottom: 8px;">🔇</div>
+              <p>该角色暂无配置本地语音包</p>
+            </div>
+          `;
+          return;
+        }
+
+        // 构建语音操作区
+        let html = `
+          <div class="character-profile-card">
+            <div class="profile-top">
+              <span class="profile-name">${model.title}</span>
+              <span class="profile-tag">${model.tag}</span>
+            </div>
+            <p class="profile-desc">${model.desc}</p>
+          </div>
+        `;
+
+        const actionIcons = {
+          '点餐 A': '🥩',
+          '点餐 B': '🍖',
+          '点餐 C': '🍗',
+          '满意': '✨',
+          '不满意': '💢'
+        };
+
+        Object.keys(ttsInfo.actions).forEach(actionName => {
+          const act = ttsInfo.actions[actionName];
+          const icon = actionIcons[actionName] || '🎙️';
+          const condTag = act.condition ? act.condition : '判定状态';
+
+          html += `
+            <div class="action-group-card">
+              <div class="action-header">
+                <span class="action-title">${icon} ${actionName}</span>
+                <span class="action-cond">${condTag}</span>
+              </div>
+              <div class="lang-btn-grid">
+          `;
+
+          const langs = [
+            { key: 'CN', label: '中文', flag: '🇨🇳' },
+            { key: 'ES', label: '西语', flag: '🇪🇸' },
+            { key: 'US', label: '英语', flag: '🇺🇸' }
+          ];
+
+          langs.forEach(l => {
+            const lData = act.languages[l.key];
+            if (lData && lData.wav) {
+              const voiceTip = lData.voice ? `${lData.voice}` : '';
+              html += `
+                <button class="voice-btn" id="vbtn_${model.id}_${actionName}_${l.key}"
+                  onclick="playTTSAudio('${lData.wav}', '${escapeQuotes(lData.subtitle)}', '${escapeQuotes(lData.tts_text)}', '${l.flag} ${l.label}', '${voiceTip}', '${act.condition}', this)">
+                  <span class="lang-flag">${l.flag}</span>
+                  <span class="lang-label">${l.label}</span>
+                </button>
+              `;
+            } else {
+              html += `
+                <button class="voice-btn" disabled style="opacity: 0.35;">
+                  <span class="lang-flag">${l.flag}</span>
+                  <span class="lang-label">${l.label}</span>
+                </button>
+              `;
+            }
+          });
+
+          html += `
+              </div>
+            </div>
+          `;
+        });
+
+        consoleContainer.innerHTML = html;
+
+      } else {
+        // 食物或建筑展示面板
+        consoleTitle.innerHTML = `<span>📋</span> 资产材质详情`;
+        consoleBadge.textContent = '3D ASSET';
+        consoleBadge.style.color = 'var(--accent-orange)';
+
+        consoleContainer.innerHTML = `
+          <div class="character-profile-card">
+            <div class="profile-top">
+              <span class="profile-name">${model.title}</span>
+              <span class="profile-tag">${model.tag}</span>
+            </div>
+            <p class="profile-desc">${model.desc}</p>
+          </div>
+
+          <div class="asset-detail-card">
+            <div class="detail-row">
+              <span class="detail-label">资产分类</span>
+              <span class="detail-val">${model.category.toUpperCase()}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">模型源文件</span>
+              <span class="detail-val">${model.model_file ? model.model_file.split('/').pop() : '无'}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">渲染格式</span>
+              <span class="detail-val">.${model.model_type.toUpperCase()}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">贴图文件</span>
+              <span class="detail-val">${model.texture_file ? model.texture_file.split('/').pop() : '内置材质'}</span>
+            </div>
+
+            ${model.texture_file ? `
+              <div class="texture-preview-box">
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">像素纹理贴图预览 (64x64/128x128)</div>
+                <img src="${model.texture_file}" alt="贴图">
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+    }
+
+    function escapeQuotes(str) {
+      if (!str) return '';
+      return str.replace(/'/g, "\'").replace(/"/g, '&quot;');
+    }
+
+    // 播放 TTS 音频并驱动字幕
+    function playTTSAudio(wavUrl, subtitle, ttsText, langLabel, voiceTip, condition, btnEl) {
+      if (!wavUrl) return;
+
+      // 切换按钮高亮态
+      if (currentActiveVoiceBtn) {
+        currentActiveVoiceBtn.classList.remove('playing');
+      }
+      if (btnEl) {
+        btnEl.classList.add('playing');
+        currentActiveVoiceBtn = btnEl;
+      }
+
+      // 显示字幕横幅
+      const banner = document.getElementById('now-playing-banner');
+      banner.style.display = 'flex';
+
+      document.getElementById('playing-lang-tag').textContent = langLabel + ' 正在播放';
+      document.getElementById('playing-voice-badge').textContent = voiceTip ? `${voiceTip} · 0.8x` : '0.8x';
+      document.getElementById('playing-sub-text').textContent = subtitle ? `“${subtitle}”` : '“暂无字幕”';
+      document.getElementById('playing-tts-text').textContent = ttsText ? `TTS 拼读注音: ${ttsText}` : '';
+      document.getElementById('playing-meta-text').textContent = condition ? `触发判定条件: ${condition}` : '';
+
+      // 播放音频
+      audioPlayer.src = wavUrl;
+      audioPlayer.play().catch(e => console.log('Audio autoplay prevented:', e));
+
+      audioPlayer.onended = () => {
+        if (currentActiveVoiceBtn) {
+          currentActiveVoiceBtn.classList.remove('playing');
+          currentActiveVoiceBtn = null;
+        }
+      };
+    }
+
+    // 切换主分类
+    function switchCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`.tab-${cat}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const titleMap = {
+        'characters': '<span>👤</span> 角色列表',
+        'food': '<span>🍖</span> 食物列表',
+        'buildings': '<span>🏠</span> 建筑设施列表'
+      };
+      document.getElementById('list-panel-title').innerHTML = titleMap[cat] || '模型列表';
+
+      renderModelList();
+    }
+
+    // 渲染左侧模型列表
+    function renderModelList(filterText = '') {
+      const container = document.getElementById('model-item-list');
+      const filtered = GALLERY_DATA.models.filter(m => {
+        const matchCat = m.category === currentCategory;
+        const matchSearch = filterText === '' || 
+          m.title.toLowerCase().includes(filterText.toLowerCase()) || 
+          m.name.toLowerCase().includes(filterText.toLowerCase()) ||
+          m.tag.toLowerCase().includes(filterText.toLowerCase());
+        return matchCat && matchSearch;
+      });
+
+      document.getElementById('list-count-badge').textContent = `${filtered.length} 项`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 10px; color: var(--text-muted);">
+            <p>未找到匹配的模型</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(m => {
+        const isActive = currentModel && currentModel.id === m.id;
+        const imgIcon = m.preview_file ? `<img src="${m.preview_file}" alt="">` : m.icon;
+
+        html += `
+          <div class="model-card ${isActive ? 'active' : ''}" id="card_${m.id}" onclick="selectModel('${m.id}')">
+            <div class="card-icon-wrap">
+              ${imgIcon}
+            </div>
+            <div class="card-info">
+              <div class="card-title">${m.title}</div>
+              <div class="card-sub">${m.tag || m.desc}</div>
+            </div>
+            <div class="card-badge">${m.model_type}</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+
+      // 如果当前没有选中模型，自动选中当前分类的第一个
+      if (!currentModel || currentModel.category !== currentCategory) {
+        if (filtered.length > 0) {
+          selectModel(filtered[0].id);
+        }
+      }
+    }
+
+    function handleSearch(val) {
+      renderModelList(val.trim());
+    }
+
+    function toggleAutoRotate() {
+      autoRotate = !autoRotate;
+      controls.autoRotate = autoRotate;
+      if (modelViewer) modelViewer.autoRotate = autoRotate;
+      document.getElementById('btn-autorotate').classList.toggle('active', autoRotate);
+    }
+
+    function toggleWireframe() {
+      wireframeMode = !wireframeMode;
+      document.getElementById('btn-wireframe').classList.toggle('active', wireframeMode);
+      if (currentMeshGroup) {
+        currentMeshGroup.traverse(child => {
+          if (child.isMesh && child.material) {
+            child.material.wireframe = wireframeMode;
+          }
+        });
+      }
+    }
+
+    function resetCamera() {
+      if (currentMeshGroup) {
+        const box = new THREE.Box3().setFromObject(currentMeshGroup);
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z, 10);
+        camera.position.set(maxDim * 1.5, maxDim * 1.2, maxDim * 1.8);
+        controls.target.set(0, size.y * 0.5, 0);
+        controls.update();
+      }
+      if (modelViewer) {
+        modelViewer.cameraOrbit = '0deg 75deg 105%';
+      }
+    }
+
+    // 初始化运行
+    window.addEventListener('DOMContentLoaded', () => {
+      initThreeScene();
+      
+      // 更新顶部统计数据
+      document.getElementById('stat-model-count').textContent = `${GALLERY_DATA.models.length} 个模型`;
+      
+      let totalWavs = 0;
+      Object.values(GALLERY_DATA.tts).forEach(c => {
+        if (c.actions) {
+          Object.values(c.actions).forEach(a => {
+            if (a.languages) {
+              Object.values(a.languages).forEach(l => {
+                if (l.wav) totalWavs++;
+              });
+            }
+          });
+        }
+      });
+      document.getElementById('stat-voice-count').textContent = `${totalWavs} 条 (3语)`;
+
+      // 默认展示角色分类
+      switchCategory('characters');
+    });
+  </script>
+</body>
+</html>
