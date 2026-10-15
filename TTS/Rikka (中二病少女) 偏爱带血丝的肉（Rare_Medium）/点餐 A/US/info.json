@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "点餐 A",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Mortal! My sealed eye craves dark blood! Give me Rare Costilla ribs!",
+  "tts_text": "Mortal! My sealed eye craves dark blood! Give me Rare Cos-tee-yah ribs!",
+  "audio_file": "Rikka_Order_Costilla_Rare_US.wav"
+}

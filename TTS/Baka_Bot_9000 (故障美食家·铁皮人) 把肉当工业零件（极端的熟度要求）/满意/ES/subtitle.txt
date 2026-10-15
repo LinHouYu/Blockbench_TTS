@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando samba, amigão!
+
+[TTS合成文本]
+¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando sam-ba, a-mi-gáu!

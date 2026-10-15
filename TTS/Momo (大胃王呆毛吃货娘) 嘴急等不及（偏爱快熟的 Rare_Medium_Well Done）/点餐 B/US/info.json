@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "I can't wait anymore! Just cook that Costilla to Rare and throw it into my mouth!",
+  "tts_text": "I can't wait anymore! Just cook that Cos-tee-yah to Rare and throw it into my mouth!",
+  "audio_file": "Momo_Order_Costilla_Rare_US.wav"
+}

@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "点餐 B",
+  "condition": "Matambre + Well Done",
+  "food": "Matambre",
+  "doneness": "WellDone",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_sarah",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Ew, blood makes me dizzy! Give me a Well Done Matambre, gotta look pretty for my feed!",
+  "tts_text": "Ew, blood makes me dizzy! Give me a Well Done Ma-tam-bre, gotta look pretty for my feed!",
+  "audio_file": "Sakura_Gyaruo_Order_Matambre_WellDone_US.wav"
+}

@@ -1,0 +1,5 @@
+[游戏字幕]
+I require shadow mana! Bring me a Medium cooked Morcilla blood sausage at once!
+
+[TTS合成文本]
+I require shadow mana! Bring me a Medium cooked Mor-see-yah blood sausage at once!

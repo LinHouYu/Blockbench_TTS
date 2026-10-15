@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 C",
+  "condition": "Chorizo + Raw",
+  "food": "Chorizo",
+  "doneness": "Raw",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunxi",
+  "speed": 0.8,
+  "pitch": 4.0,
+  "timbre_mode": "机器人电音变声 (音调 +4.0)",
+  "subtitle": "叮！正在执行冷启动程序。请直接提供一根**未加热的全生香肠（Raw）**作为冷却液管道。",
+  "tts_text": "叮！正在执行冷启动程序。请直接提供一根，未加热的，全生香肠，作为冷却管道。",
+  "audio_file": "Baka_Bot_9000_Order_Chorizo_Raw_CN.wav"
+}

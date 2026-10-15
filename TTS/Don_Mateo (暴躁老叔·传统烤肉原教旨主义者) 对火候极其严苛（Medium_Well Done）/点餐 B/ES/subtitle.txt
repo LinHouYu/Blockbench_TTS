@@ -1,0 +1,5 @@
+[游戏字幕]
+A ver si sabés asar... quiero un Matambre bien cocido, Well Done, pero que sea una manteca.
+
+[TTS合成文本]
+A ver si sabés asar... quiero un Ma-tam-bre bien cocido, güel dan, pero que sea una manteca.

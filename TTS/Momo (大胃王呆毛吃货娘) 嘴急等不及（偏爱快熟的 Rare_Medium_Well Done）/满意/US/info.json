@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Yay! My tummy is super round and happy now! You're the best chef in the whole universe!",
+  "tts_text": "Yay! My tummy is super round and happy now! You're the best chef in the whole universe!",
+  "audio_file": "Momo_Happy_US.wav"
+}

@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Qué poder oscuro tan delicioso! Hoy perdonaré tu vida, ¡sos crack, amigão!",
+  "tts_text": "¡Qué poder oscuro tan delicioso! Hoy perdonaré tu vida, ¡sos crak, a-mi-gáu!",
+  "audio_file": "Rikka_Happy_ES.wav"
+}

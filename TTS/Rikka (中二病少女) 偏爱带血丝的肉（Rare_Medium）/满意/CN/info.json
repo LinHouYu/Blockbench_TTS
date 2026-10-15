@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "唔……这股庞大的暗黑魔力在体内涌动！干得漂亮，今天就不封印你了，泰裤辣！",
+  "tts_text": "唔……这股庞大的暗黑魔力在体内涌动！干得漂亮，今天就不封印你了，太酷啦！",
+  "audio_file": "Rikka_Happy_CN.wav"
+}

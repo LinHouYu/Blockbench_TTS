@@ -1,0 +1,17 @@
+{
+  "character": "Don_Mateo",
+  "character_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_santa",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Não, não, amigão, dedicate a otra cosa!",
+  "tts_text": "¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Niao, niao, a-mi-gáu, dedicate a otra cosa!",
+  "audio_file": "Don_Mateo_Angry_ES.wav"
+}

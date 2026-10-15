@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "点餐 A",
+  "condition": "Costilla + Raw",
+  "food": "Costilla",
+  "doneness": "Raw",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Uga, uga! ¡Fuego malo! ¡No toques la parrilla, dame esa Costilla totalmente cruda, Raw!",
+  "tts_text": "¡U-ga, u-ga! ¡Fuego malo! ¡No toques la pa-rri-sha, dame esa Cos-ti-sha totalmente cruda, Ro!",
+  "audio_file": "Uga_Chan_Order_Costilla_Raw_ES.wav"
+}

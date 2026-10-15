@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 C",
+  "condition": "Morcilla + Well Done",
+  "food": "Morcilla",
+  "doneness": "WellDone",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Smells so good! Today I want a hot Well Done Morcilla sausage to swallow in one bite!",
+  "tts_text": "Smells so good! Today I want a hot Well Done Mor-see-yah sausage to swallow in one bite!",
+  "audio_file": "Momo_Order_Morcilla_WellDone_US.wav"
+}

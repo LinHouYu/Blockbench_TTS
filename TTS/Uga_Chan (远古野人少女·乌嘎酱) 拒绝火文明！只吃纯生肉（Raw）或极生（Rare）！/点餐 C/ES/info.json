@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "点餐 C",
+  "condition": "Matambre + Rare",
+  "food": "Matambre",
+  "doneness": "Rare",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Sniff, sniff Hoy probar comida tibia. ¡Dame Matambre apenas vuelta y vuelta, nivel Rare!",
+  "tts_text": "Hoy probar comida tibia. ¡Dame Ma-tam-bre apenas vuelta y vuelta, nivel Reir!",
+  "audio_file": "Uga_Chan_Order_Matambre_Rare_ES.wav"
+}

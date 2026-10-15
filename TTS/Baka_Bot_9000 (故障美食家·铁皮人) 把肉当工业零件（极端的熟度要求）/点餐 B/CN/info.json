@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 B",
+  "condition": "Morcilla + Burnt",
+  "food": "Morcilla",
+  "doneness": "Burnt",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunxi",
+  "speed": 0.8,
+  "pitch": 4.0,
+  "timbre_mode": "机器人电音变声 (音调 +4.0)",
+  "subtitle": "滋滋——系统过载！需要高阻值碳化材料！请将**血肠（Morcilla）烧焦成黑炭（Burnt）**后输入！",
+  "tts_text": "滋、滋。系统过载！需要碳化材料！请将，血肠，烧焦成黑炭后输入！",
+  "audio_file": "Baka_Bot_9000_Order_Morcilla_Burnt_CN.wav"
+}

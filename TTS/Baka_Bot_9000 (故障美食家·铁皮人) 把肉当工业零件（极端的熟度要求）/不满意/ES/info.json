@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_alex",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "¡Error 404! ¡Combustible basura! ¡Não, não, amigão! ¡Iniciando autodestrucción!",
+  "tts_text": "¡E-rror cuatro cero cuatro! ¡Combustible basura! ¡Niao, niao, a-mi-gáu! ¡Iniciando autodestrucción!",
+  "audio_file": "Baka_Bot_9000_Angry_ES.wav"
+}

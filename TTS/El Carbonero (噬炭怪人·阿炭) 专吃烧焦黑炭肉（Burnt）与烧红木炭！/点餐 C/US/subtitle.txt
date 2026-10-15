@@ -1,0 +1,5 @@
+[游戏字幕]
+Hey! Can I eat the glowing red coal?! If not, give me a Burnt Chorizo sausage!
+
+[TTS合成文本]
+Hey! Can I eat the glowing red coal?! If not, give me a Burnt Cho-ree-zo sausage!

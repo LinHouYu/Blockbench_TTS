@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Buaaa! ¡Mataste la carne con fuego! ¡Não, não, amigão! ¡Te voy a dar garrotazo!
+
+[TTS合成文本]
+¡Buaaa! ¡Mataste la carne con fuego! ¡Niao, niao, a-mi-gáu! ¡Te voy a dar ga-rro-tazo!

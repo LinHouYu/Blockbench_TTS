@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "点餐 A",
+  "condition": "Costilla + Raw",
+  "food": "Costilla",
+  "doneness": "Raw",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_sarah",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Uga! Fire is bad! Don't touch the grill! Throw me that Raw Costilla rib, completely uncooked!",
+  "tts_text": "Uga! Fire is bad! Don't touch the grill! Throw me that Raw Cos-tee-yah rib, completely uncooked!",
+  "audio_file": "Uga_Chan_Order_Costilla_Raw_US.wav"
+}

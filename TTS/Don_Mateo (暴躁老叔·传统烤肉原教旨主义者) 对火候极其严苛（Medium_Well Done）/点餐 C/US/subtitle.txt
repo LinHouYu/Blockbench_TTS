@@ -1,0 +1,5 @@
+[游戏字幕]
+For starters, hand me a Well Done Chorizo sausage, sizzling hot and fully cooked!
+
+[TTS合成文本]
+For starters, hand me a Well Done Cho-ree-zo sausage, sizzling hot and fully cooked!

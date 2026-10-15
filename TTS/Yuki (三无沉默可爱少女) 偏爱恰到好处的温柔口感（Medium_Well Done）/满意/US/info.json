@@ -1,0 +1,17 @@
+{
+  "character": "Yuki",
+  "character_folder": "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_sky",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Yummy... My heart goes doki-doki. Thumbs up for you.",
+  "tts_text": "Yummy... My heart goes do-ki do-ki. Thumbs up for you.",
+  "audio_file": "Yuki_Happy_US.wav"
+}

@@ -1,0 +1,5 @@
+[游戏字幕]
+Sniff, sniff Hoy probar comida tibia. ¡Dame Matambre apenas vuelta y vuelta, nivel Rare!
+
+[TTS合成文本]
+Hoy probar comida tibia. ¡Dame Ma-tam-bre apenas vuelta y vuelta, nivel Reir!

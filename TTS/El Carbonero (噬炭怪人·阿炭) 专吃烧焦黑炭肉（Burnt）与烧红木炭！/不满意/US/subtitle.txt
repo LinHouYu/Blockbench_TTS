@@ -1,0 +1,5 @@
+[游戏字幕]
+Blegh! Why is this meat edible and not burnt?! Disgusting! Nao, nao, amigão!
+
+[TTS合成文本]
+Blegh! Why is this meat edible and not burnt?! Disgusting! Nao, nao, a-mee-gow!

@@ -1,0 +1,17 @@
+{
+  "character": "Don_Mateo",
+  "character_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_santa",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.",
+  "tts_text": "Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.",
+  "audio_file": "Don_Mateo_Happy_ES.wav"
+}

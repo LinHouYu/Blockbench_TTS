@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 C",
+  "condition": "Morcilla + Well Done",
+  "food": "Morcilla",
+  "doneness": "WellDone",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Qué rico olor! Hoy quiero una Morcilla calentita bien cocida, Well Done, ¡de un bocado!",
+  "tts_text": "¡Qué rico olor! Hoy quiero una Mor-ci-sha calentita bien cocida, güel dan, ¡de un bocado!",
+  "audio_file": "Momo_Order_Morcilla_WellDone_ES.wav"
+}

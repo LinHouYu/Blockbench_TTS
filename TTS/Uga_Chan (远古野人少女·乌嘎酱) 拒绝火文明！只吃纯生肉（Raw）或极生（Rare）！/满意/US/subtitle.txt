@@ -1,0 +1,5 @@
+[游戏字幕]
+Nom nom! Fresh blood and wild power! You are Big Chief of my tribe now!
+
+[TTS合成文本]
+Nom, nom! Fresh blood and wild power! You are Big Chief of my tribe now!

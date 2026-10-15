@@ -1,0 +1,5 @@
+[游戏字幕]
+Crash, crash ¡Ufff, pura ceniza de calidad! ¡Uma delícia, amigão!
+
+[TTS合成文本]
+¡Ufff, pura ceniza de calidad! ¡U-ma de-lí-sia, a-mi-gáu!

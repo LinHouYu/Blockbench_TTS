@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Buaaa! ¡No se puede comer esto! ¡Não, não, amigão! ¡Con la comida no se juega!",
+  "tts_text": "¡Buaaa! ¡No se puede comer esto! ¡Niao, niao, a-mi-gáu! ¡Con la comida no se juega!",
+  "audio_file": "Momo_Angry_ES.wav"
+}

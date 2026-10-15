@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Jajaja! ¡Dame una Costilla totalmente quemada, bien Burnt! ¡Quiero comer ceniza!
+
+[TTS合成文本]
+¡Ja-ja-ja! ¡Dame una Cos-ti-sha totalmente quemada, bien Bernt! ¡Quiero comer ceniza!

@@ -1,0 +1,17 @@
+{
+  "character": "Yuki",
+  "character_folder": "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Pollo + Well Done",
+  "food": "Pollo",
+  "doneness": "WellDone",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_sky",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "I'm hungry... I want Well Done Pollo chicken, so my tummy doesn't hurt...",
+  "tts_text": "I'm hungry... I want Well Done Po-yo chicken, so my tummy doesn't hurt...",
+  "audio_file": "Yuki_Order_Pollo_WellDone_US.wav"
+}

@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Ay, por favor, qué horror! ¡Não, não, amigão! ¡Me arruinaste el día, devolveme la plata!
+
+[TTS合成文本]
+¡Ay, por favor, qué horror! ¡Niao, niao, a-mi-gáu! ¡Me arruinaste el día, devolveme la plata!

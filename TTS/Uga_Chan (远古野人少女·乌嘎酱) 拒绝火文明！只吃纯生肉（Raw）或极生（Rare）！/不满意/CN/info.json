@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "不满意",
+  "condition": "烤太熟了",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "呜哇！肉都烫死了，咬不动！破坏大自然恩赐，你的胆子真是肥嘟嘟的！拿棒子敲你哦！",
+  "tts_text": "呜哇！肉都烫死了，咬不动！破坏大自然恩赐，你的胆子真是肥嘟嘟的！拿棒子敲你哦！",
+  "audio_file": "Uga_Chan_Angry_CN.wav"
+}

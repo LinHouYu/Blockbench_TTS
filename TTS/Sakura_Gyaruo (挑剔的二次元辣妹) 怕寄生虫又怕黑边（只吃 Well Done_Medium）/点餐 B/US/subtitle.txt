@@ -1,0 +1,5 @@
+[游戏字幕]
+Ew, blood makes me dizzy! Give me a Well Done Matambre, gotta look pretty for my feed!
+
+[TTS合成文本]
+Ew, blood makes me dizzy! Give me a Well Done Ma-tam-bre, gotta look pretty for my feed!

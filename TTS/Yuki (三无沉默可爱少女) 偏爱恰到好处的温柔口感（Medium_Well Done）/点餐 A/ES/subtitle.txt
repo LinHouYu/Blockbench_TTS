@@ -1,0 +1,5 @@
+[游戏字幕]
+Este... un Chorizo a punto Medium, por favor... mirada fija
+
+[TTS合成文本]
+Este... un Cho-ri-zo a punto Mí-dium, por favor...

@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "点餐 A",
+  "condition": "Costilla + Raw",
+  "food": "Costilla",
+  "doneness": "Raw",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "乌嘎！火是坏文明！不准放到炉子上！直接把那块**全生的牛排骨（Raw）**丢给我啃！吼！",
+  "tts_text": "乌嘎！火是坏文明！不准放到炉子上！直接把那块，全生的牛排骨，丢给我啃！吼！",
+  "audio_file": "Uga_Chan_Order_Costilla_Raw_CN.wav"
+}

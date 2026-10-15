@@ -1,0 +1,5 @@
+[游戏字幕]
+Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una Morcilla quemada, nivel Burnt!
+
+[TTS合成文本]
+Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una, Mor-ci-sha quemada, nivel Bernt!

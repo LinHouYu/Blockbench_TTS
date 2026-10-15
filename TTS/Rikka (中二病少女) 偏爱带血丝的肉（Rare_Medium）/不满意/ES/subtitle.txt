@@ -1,0 +1,5 @@
+[游戏字幕]
+¿Me das este sacrificio patético? ¡Não, não, amigão! ¡Sufrirás mi ira!
+
+[TTS合成文本]
+¿Me das este sacrificio patético? ¡Niao, niao, a-mi-gáu! ¡Sufrirás mi ira!

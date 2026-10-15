@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_sarah",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Nom nom! Fresh blood and wild power! You are Big Chief of my tribe now!",
+  "tts_text": "Nom, nom! Fresh blood and wild power! You are Big Chief of my tribe now!",
+  "audio_file": "Uga_Chan_Happy_US.wav"
+}

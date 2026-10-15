@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "点餐 A",
+  "condition": "Pollo + Well Done",
+  "food": "Pollo",
+  "doneness": "WellDone",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoyi",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "哈喽~ 本小姐正在减脂期呢，来一份全熟的烤鸡肉（Well Done），不准夹生也不准烤黑哦！",
+  "tts_text": "哈喽~ 本小姐正在减脂期呢，来一份全熟的烤鸡肉，不准夹生，也不准烤黑哦！",
+  "audio_file": "Sakura_Gyaruo_Order_Pollo_WellDone_CN.wav"
+}

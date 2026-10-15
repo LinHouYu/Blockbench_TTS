@@ -1,0 +1,5 @@
+[游戏字幕]
+Rico... Mi corazón hace tuki-tuki. Muchas gracias.
+
+[TTS合成文本]
+Rico... Mi corazón hace tu-ki tu-ki. Muchas gracias.

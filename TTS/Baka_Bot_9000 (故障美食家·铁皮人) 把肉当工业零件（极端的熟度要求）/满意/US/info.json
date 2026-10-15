@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_michael",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "Ding! Power at 200 percent! My motherboard is doing a backflip! Good job, human!",
+  "tts_text": "Ding! Power at two hundred percent! My motherboard is doing a backflip! Good job, human!",
+  "audio_file": "Baka_Bot_9000_Happy_US.wav"
+}

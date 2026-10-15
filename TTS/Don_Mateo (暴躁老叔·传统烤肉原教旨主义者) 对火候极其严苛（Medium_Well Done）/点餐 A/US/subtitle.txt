@@ -1,0 +1,5 @@
+[游戏字幕]
+Listen up, kid! Give me Costilla ribs cooked Medium. Overcook it, and I'm flipping this grill!
+
+[TTS合成文本]
+Listen up, kid! Give me Cos-tee-yah ribs cooked Medium. Overcook it, and I'm flipping this grill!

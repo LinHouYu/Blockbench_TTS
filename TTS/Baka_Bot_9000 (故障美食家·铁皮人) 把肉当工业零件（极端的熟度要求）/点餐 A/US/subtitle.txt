@@ -1,0 +1,5 @@
+[游戏字幕]
+Beep-boop. Low battery. Requesting one black battery of Well Done Morcilla. Over.
+
+[TTS合成文本]
+Beep, boop. Low battery. Requesting one black battery of, Well Done Mor-see-yah. Over.

@@ -1,0 +1,5 @@
+[游戏字幕]
+Grrr! Uga wants fresh prey! Give me Raw Pollo chicken, zero seconds on the fire!
+
+[TTS合成文本]
+Grrr! Uga wants fresh prey! Give me Raw Po-yo chicken, zero seconds on the fire!

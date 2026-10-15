@@ -1,0 +1,5 @@
+[游戏字幕]
+Totes hello! I'm on a diet, give me Well Done Pollo chicken! No pink meat and zero char!
+
+[TTS合成文本]
+Totes hello! I'm on a diet, give me Well Done Po-yo chicken! No pink meat and zero char!

@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Mortal! Mi ojo sellado exige sangre. ¡Dame una Costilla jugosa, bien Rare!
+
+[TTS合成文本]
+¡Mortal! Mi ojo se-sha-do exige sangre. ¡Dame una Cos-ti-sha jugosa, punto Reir!

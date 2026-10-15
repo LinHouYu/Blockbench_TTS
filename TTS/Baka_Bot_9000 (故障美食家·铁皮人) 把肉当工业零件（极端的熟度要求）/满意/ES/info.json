@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_alex",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando samba, amigão!",
+  "tts_text": "¡Ping! ¡Energía al máximo! ¡Mi placa madre está bailando sam-ba, a-mi-gáu!",
+  "audio_file": "Baka_Bot_9000_Happy_ES.wav"
+}

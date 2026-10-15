@@ -1,0 +1,17 @@
+{
+  "character": "Don_Mateo",
+  "character_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）",
+  "action": "点餐 A",
+  "condition": "Costilla + Medium",
+  "food": "Costilla",
+  "doneness": "Medium",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_adam",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Listen up, kid! Give me Costilla ribs cooked Medium. Overcook it, and I'm flipping this grill!",
+  "tts_text": "Listen up, kid! Give me Cos-tee-yah ribs cooked Medium. Overcook it, and I'm flipping this grill!",
+  "audio_file": "Don_Mateo_Order_Costilla_Medium_US.wav"
+}

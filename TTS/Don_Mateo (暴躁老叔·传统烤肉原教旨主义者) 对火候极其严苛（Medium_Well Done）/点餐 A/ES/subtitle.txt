@@ -1,0 +1,5 @@
+[游戏字幕]
+Escuchame pibe, dame una Costilla a punto Medium, jugosa. Si la secás, te cierro el boliche.
+
+[TTS合成文本]
+Escuchame pibe, dame una Cos-ti-sha a punto Mí-dium, jugosa. Si la secás, te cierro el bo-li-che.

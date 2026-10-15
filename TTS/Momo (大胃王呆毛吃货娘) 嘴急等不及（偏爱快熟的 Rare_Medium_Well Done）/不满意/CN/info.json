@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "呜哇——！根本没法吃嘛！克扣美少女的口粮，你的胆子真是肥嘟嘟的！赔我精神损失费！",
+  "tts_text": "呜哇！根本没法吃嘛！克扣美少女的口粮，你的胆子真是肥嘟嘟的！赔我精神损失费！",
+  "audio_file": "Momo_Angry_CN.wav"
+}

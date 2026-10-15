@@ -1,0 +1,5 @@
+[游戏字幕]
+Necesito maná oscuro. ¡Entrégame una Morcilla a punto Medium de inmediato!
+
+[TTS合成文本]
+Necesito maná oscuro. ¡Entrégame una Mor-ci-sha a punto Mí-dium de inmediato!

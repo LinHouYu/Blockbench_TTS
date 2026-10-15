@@ -1,0 +1,5 @@
+[游戏字幕]
+Yay! My tummy is super round and happy now! You're the best chef in the whole universe!
+
+[TTS合成文本]
+Yay! My tummy is super round and happy now! You're the best chef in the whole universe!

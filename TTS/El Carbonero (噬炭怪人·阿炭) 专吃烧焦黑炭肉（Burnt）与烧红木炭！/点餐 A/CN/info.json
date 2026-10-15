@@ -1,0 +1,17 @@
+{
+  "character": "El_Carbonero",
+  "character_folder": "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！",
+  "action": "点餐 A",
+  "condition": "Costilla + Burnt",
+  "food": "Costilla",
+  "doneness": "Burnt",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunyang",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "嘿嘿嘿！给我来一块彻底烤焦的牛排骨（Burnt）！越黑越好，没烤成黑炭我可不吃！",
+  "tts_text": "嘿嘿嘿！给我来一块，彻底烤焦的牛排骨！越黑越好，没烤成黑炭我可不吃！",
+  "audio_file": "El_Carbonero_Order_Costilla_Burnt_CN.wav"
+}

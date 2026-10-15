@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 C",
+  "condition": "Chorizo + Raw",
+  "food": "Chorizo",
+  "doneness": "Raw",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_michael",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "Ping. Cold boot sequence initiated. Provide one Raw Chorizo tube with zero thermal energy.",
+  "tts_text": "Ping. Cold boot sequence initiated. Provide one, Raw Cho-ree-zo tube, with zero thermal energy.",
+  "audio_file": "Baka_Bot_9000_Order_Chorizo_Raw_US.wav"
+}

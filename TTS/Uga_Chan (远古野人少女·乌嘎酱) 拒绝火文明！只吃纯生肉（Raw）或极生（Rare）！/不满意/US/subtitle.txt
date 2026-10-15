@@ -1,0 +1,5 @@
+[游戏字幕]
+Waaah! You killed the meat with fire! Your boldness is chubby! Uga smash you with club!
+
+[TTS合成文本]
+Waaah! You killed the meat with fire! Your boldness is fat and chubby! Uga smash you with club!

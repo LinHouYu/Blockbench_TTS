@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Grrr! ¡Uga quiere cazar! ¡Dame Pollo crudo, nivel Raw, directo de la heladera!
+
+[TTS合成文本]
+¡Grrr! ¡U-ga quiere cazar! ¡Dame Po-sho crudo, nivel Ro, directo de la heladera!

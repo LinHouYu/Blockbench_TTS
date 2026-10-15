@@ -1,0 +1,17 @@
+{
+  "character": "Don_Mateo",
+  "character_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Matambre + Well Done",
+  "food": "Matambre",
+  "doneness": "WellDone",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunyang",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "考考你的基本功！**牛腹肉（Matambre）很薄，给我烤到全熟（Well Done）**但绝对不能糊！",
+  "tts_text": "考考你的基本功！牛腹肉很薄，给我烤到全熟，但绝对不能糊！",
+  "audio_file": "Don_Mateo_Order_Matambre_WellDone_CN.wav"
+}

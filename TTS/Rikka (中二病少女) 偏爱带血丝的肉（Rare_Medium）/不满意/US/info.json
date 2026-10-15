@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "You dare mock the Dark Queen with this?! Your boldness is fat and chubby! Be gone!",
+  "tts_text": "You dare mock the Dark Queen with this?! Your boldness is fat and chubby! Be gone!",
+  "audio_file": "Rikka_Angry_US.wav"
+}

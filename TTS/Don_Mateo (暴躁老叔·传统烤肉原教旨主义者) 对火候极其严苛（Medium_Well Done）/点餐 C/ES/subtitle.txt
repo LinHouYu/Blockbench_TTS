@@ -1,0 +1,5 @@
+[游戏字幕]
+Para empezar el domingo, dame un Chorizo bien hecho, Well Done, que reviente de sabor.
+
+[TTS合成文本]
+Para empezar el domingo, dame un Cho-ri-zo bien hecho, güel dan, que reviente de sabor.

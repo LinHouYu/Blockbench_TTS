@@ -1,0 +1,17 @@
+{
+  "character": "El_Carbonero",
+  "character_folder": "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！",
+  "action": "点餐 C",
+  "condition": "Chorizo + Burnt (或直接铲一块木炭)",
+  "food": "Chorizo",
+  "doneness": "Burnt",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunyang",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "老板，炉子底下那块烧得通红的木炭卖不卖？不卖的话，给我把**香肠烤成焦炭（Burnt）**端上来！",
+  "tts_text": "老板，炉子底下那块烧得通红的木炭卖不卖？不卖的话，给我把香肠烤成焦炭端上来！",
+  "audio_file": "El_Carbonero_Order_Chorizo_Burnt_CN.wav"
+}

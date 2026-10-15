@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "点餐 B",
+  "condition": "Morcilla + Medium",
+  "food": "Morcilla",
+  "doneness": "Medium",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Necesito maná oscuro. ¡Entrégame una Morcilla a punto Medium de inmediato!",
+  "tts_text": "Necesito maná oscuro. ¡Entrégame una Mor-ci-sha a punto Mí-dium de inmediato!",
+  "audio_file": "Rikka_Order_Morcilla_Medium_ES.wav"
+}

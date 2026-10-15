@@ -1,0 +1,5 @@
+[游戏字幕]
+What did you do to this poor cow?! No, no, amigão, close the shop right now!
+
+[TTS合成文本]
+What did you do to this poor cow?! Nao, nao, a-mee-gow, close the shop right now!

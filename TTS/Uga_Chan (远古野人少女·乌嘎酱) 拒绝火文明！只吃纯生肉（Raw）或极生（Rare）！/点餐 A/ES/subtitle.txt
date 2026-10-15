@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Uga, uga! ¡Fuego malo! ¡No toques la parrilla, dame esa Costilla totalmente cruda, Raw!
+
+[TTS合成文本]
+¡U-ga, u-ga! ¡Fuego malo! ¡No toques la pa-rri-sha, dame esa Cos-ti-sha totalmente cruda, Ro!

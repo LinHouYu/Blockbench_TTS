@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Escuchame! ¡Quiero un Pollo carbonizado, nivel Burnt! ¡Que haga ruido de carbón al morder!
+
+[TTS合成文本]
+¡Escuchame! ¡Quiero un Po-sho carbonizado, nivel Bernt! ¡Que haga ruido de carbón al morder!

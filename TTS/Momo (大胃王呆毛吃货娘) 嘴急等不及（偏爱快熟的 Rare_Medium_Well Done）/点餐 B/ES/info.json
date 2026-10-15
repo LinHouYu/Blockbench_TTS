@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡No aguanto más! ¡Sacame esa Costilla jugosa en punto Rare ya mismo que me la como toda!",
+  "tts_text": "¡No aguanto más! ¡Sacame esa Cos-ti-sha jugosa en punto Reir ya mismo que me la como toda!",
+  "audio_file": "Momo_Order_Costilla_Rare_ES.wav"
+}

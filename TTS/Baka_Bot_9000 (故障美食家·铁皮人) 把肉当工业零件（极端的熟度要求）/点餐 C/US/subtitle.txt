@@ -1,0 +1,5 @@
+[游戏字幕]
+Ping. Cold boot sequence initiated. Provide one Raw Chorizo tube with zero thermal energy.
+
+[TTS合成文本]
+Ping. Cold boot sequence initiated. Provide one, Raw Cho-ree-zo tube, with zero thermal energy.

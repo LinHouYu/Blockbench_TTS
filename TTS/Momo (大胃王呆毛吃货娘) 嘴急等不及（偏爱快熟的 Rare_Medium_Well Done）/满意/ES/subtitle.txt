@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Yupi! ¡Panza llena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!
+
+[TTS合成文本]
+¡Yu-pi! ¡Panza shena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!

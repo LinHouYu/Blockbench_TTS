@@ -1,0 +1,5 @@
+[游戏字幕]
+Ding! Power at 200 percent! My motherboard is doing a backflip! Good job, human!
+
+[TTS合成文本]
+Ding! Power at two hundred percent! My motherboard is doing a backflip! Good job, human!

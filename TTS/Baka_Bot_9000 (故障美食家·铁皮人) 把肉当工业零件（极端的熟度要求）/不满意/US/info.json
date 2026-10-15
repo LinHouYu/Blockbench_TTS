@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_michael",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "Error 404! Trash detected! No, no, amigão! Formatting your hard drive in 3, 2, 1...",
+  "tts_text": "Error four oh four! Trash detected! Nao, nao, a-mee-gow! Formatting your hard drive in three, two, one.",
+  "audio_file": "Baka_Bot_9000_Angry_US.wav"
+}

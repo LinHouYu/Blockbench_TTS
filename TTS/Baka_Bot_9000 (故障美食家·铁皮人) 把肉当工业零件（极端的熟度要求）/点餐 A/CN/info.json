@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 A",
+  "condition": "Morcilla + Well Done",
+  "food": "Morcilla",
+  "doneness": "WellDone",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunxi",
+  "speed": 0.8,
+  "pitch": 4.0,
+  "timbre_mode": "机器人电音变声 (音调 +4.0)",
+  "subtitle": "哔哔——电量不足。请投喂一根加热到全熟（Well Done）的“黑油电池包”（血肠）。完毕。",
+  "tts_text": "哔、哔。电量不足。请投喂一根，加热到全熟的，黑油电池包，血肠。完毕。",
+  "audio_file": "Baka_Bot_9000_Order_Morcilla_WellDone_CN.wav"
+}

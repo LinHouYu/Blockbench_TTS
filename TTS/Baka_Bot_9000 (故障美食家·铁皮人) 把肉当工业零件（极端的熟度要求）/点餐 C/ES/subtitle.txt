@@ -1,0 +1,5 @@
+[游戏字幕]
+Ping. Iniciando arranque en frío. Entregue un tubo de Chorizo crudo, estado Raw, sin cocinar.
+
+[TTS合成文本]
+Ping. Iniciando arranque en frío. Entregue un tubo de, Cho-ri-zo crudo, estado Ro, sin cocinar.

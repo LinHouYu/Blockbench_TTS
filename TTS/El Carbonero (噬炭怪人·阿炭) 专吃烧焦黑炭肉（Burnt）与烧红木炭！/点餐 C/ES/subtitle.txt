@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Che! ¿Me vendés el carbón rojo del fuego? ¡Si no, dame un Chorizo bien quemado, Burnt!
+
+[TTS合成文本]
+¡Che! ¿Me vendés el carbón rojo del fuego? ¡Si no, dame un Cho-ri-zo bien quemado, Bernt!

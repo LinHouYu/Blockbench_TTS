@@ -1,0 +1,5 @@
+[游戏字幕]
+Bzzzt. Overload! Carbon resistor needed! Feed me a Burnt Morcilla sausage immediately!
+
+[TTS合成文本]
+Bzzzt. Overload! Carbon resistor needed! Feed me a, Burnt Mor-see-yah sausage, immediately!

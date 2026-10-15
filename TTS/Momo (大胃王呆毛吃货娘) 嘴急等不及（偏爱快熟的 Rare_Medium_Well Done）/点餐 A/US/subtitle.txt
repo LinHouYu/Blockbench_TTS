@@ -1,0 +1,5 @@
+[游戏字幕]
+Boss, I'm starving! Give me Medium Pollo chicken, super fast please! Drooling already!
+
+[TTS合成文本]
+Boss, I'm starving! Give me Medium Po-yo chicken, super fast please! Drooling already!

@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "竟敢用这种劣质祭品愚弄暗黑女王？你的胆子真是肥嘟嘟的！受死吧！",
+  "tts_text": "竟敢用这种劣质祭品愚弄本女王？你、的、胆、子、真、是、肥、嘟、嘟、的！受死吧！",
+  "audio_file": "Rikka_Angry_CN.wav"
+}

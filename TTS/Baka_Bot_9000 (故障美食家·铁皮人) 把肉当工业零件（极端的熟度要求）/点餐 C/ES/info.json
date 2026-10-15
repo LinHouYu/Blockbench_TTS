@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 C",
+  "condition": "Chorizo + Raw",
+  "food": "Chorizo",
+  "doneness": "Raw",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_alex",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "Ping. Iniciando arranque en frío. Entregue un tubo de Chorizo crudo, estado Raw, sin cocinar.",
+  "tts_text": "Ping. Iniciando arranque en frío. Entregue un tubo de, Cho-ri-zo crudo, estado Ro, sin cocinar.",
+  "audio_file": "Baka_Bot_9000_Order_Chorizo_Raw_ES.wav"
+}

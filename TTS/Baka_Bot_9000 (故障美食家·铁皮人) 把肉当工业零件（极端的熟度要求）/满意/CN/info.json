@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zm_yunxi",
+  "speed": 0.8,
+  "pitch": 4.0,
+  "timbre_mode": "机器人电音变声 (音调 +4.0)",
+  "subtitle": "叮！充能百分之二百！CPU要爽到烧起来了！好喝到翘jiojio！",
+  "tts_text": "叮！充能，百分之二百！C、P、U、要爽到烧起来了！好喝到，翘脚脚！",
+  "audio_file": "Baka_Bot_9000_Happy_CN.wav"
+}

@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "等不及全熟啦！那块**牛排骨（Costilla）只要烤到三分熟（Rare）**就快端上来给我炫嘴里吧！",
+  "tts_text": "等不及全熟啦！那块牛排骨，只要烤到三分熟，就快端上来给我炫嘴里吧！",
+  "audio_file": "Momo_Order_Costilla_Rare_CN.wav"
+}

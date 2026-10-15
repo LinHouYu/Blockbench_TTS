@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Holis! Estoy cuidando la línea, dame Pollo bien cocido, Well Done, cero crudo y cero quemado.
+
+[TTS合成文本]
+¡Ho-lis! Estoy cuidando la línea, dame Po-sho bien cocido, güel dan, cero crudo y cero quemado.

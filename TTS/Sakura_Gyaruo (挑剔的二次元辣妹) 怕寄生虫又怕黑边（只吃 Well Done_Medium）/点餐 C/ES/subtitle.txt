@@ -1,0 +1,5 @@
+[游戏字幕]
+Hoy es mi permitido, ¿sabés? Dame un Chorizo jugoso a punto Medium, o te escracho en redes.
+
+[TTS合成文本]
+Hoy es mi permitido, ¿sabés? Dame un Cho-ri-zo jugoso a punto Mí-dium, o te escracho en redes.

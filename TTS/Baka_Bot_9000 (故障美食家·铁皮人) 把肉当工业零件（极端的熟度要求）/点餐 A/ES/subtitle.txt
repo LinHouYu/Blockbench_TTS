@@ -1,0 +1,5 @@
+[游戏字幕]
+Bip-bop. Batería baja. Solicito una batería negra de Morcilla en estado Well Done. Cambio.
+
+[TTS合成文本]
+Bip, bop. Batería baja. Solicito una batería negra de, Mor-ci-sha, en estado güel dan. Cambio.

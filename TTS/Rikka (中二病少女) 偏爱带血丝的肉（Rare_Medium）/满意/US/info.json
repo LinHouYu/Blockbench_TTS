@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Such overwhelming dark flavor! I shall spare your soul today. Absolute cinema!",
+  "tts_text": "Such overwhelming dark flavor! I shall spare your soul today. Absolute cinema!",
+  "audio_file": "Rikka_Happy_US.wav"
+}

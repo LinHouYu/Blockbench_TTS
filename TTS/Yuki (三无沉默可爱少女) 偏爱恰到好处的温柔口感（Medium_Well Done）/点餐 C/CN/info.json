@@ -1,0 +1,17 @@
+{
+  "character": "Yuki",
+  "character_folder": "Yuki (三无沉默可爱少女) 偏爱恰到好处的温柔口感（Medium_Well Done）",
+  "action": "点餐 C",
+  "condition": "Matambre + Medium",
+  "food": "Matambre",
+  "doneness": "Medium",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoxiao",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "老板……今天想吃五分熟的牛腹肉。嫩一点的，谢谢……",
+  "tts_text": "老板……今天想吃，五分熟的，牛腹肉。嫩一点的，谢谢……",
+  "audio_file": "Yuki_Order_Matambre_Medium_CN.wav"
+}

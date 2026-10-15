@@ -1,0 +1,17 @@
+{
+  "character": "Don_Mateo",
+  "character_folder": "Don_Mateo (暴躁老叔·传统烤肉原教旨主义者) 对火候极其严苛（Medium_Well Done）",
+  "action": "点餐 B",
+  "condition": "Matambre + Well Done",
+  "food": "Matambre",
+  "doneness": "WellDone",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_adam",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Let's test your skill! Cook a Matambre to Well Done, tender like butter, not burnt!",
+  "tts_text": "Let's test your skill! Cook a Ma-tam-bre to Well Done, tender like butter, not burnt!",
+  "audio_file": "Don_Mateo_Order_Matambre_WellDone_US.wav"
+}

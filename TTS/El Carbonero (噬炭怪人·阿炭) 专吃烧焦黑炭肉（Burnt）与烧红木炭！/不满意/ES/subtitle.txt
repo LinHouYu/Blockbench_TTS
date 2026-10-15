@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Puaj! ¡Esto no está quemado, qué asco! ¡Não, não, amigão! ¡Falta fuego!
+
+[TTS合成文本]
+¡Puaj! ¡Esto no está quemado, qué asco! ¡Niao, niao, a-mi-gáu! ¡Falta fuego!

@@ -1,0 +1,17 @@
+{
+  "character": "Baka_Bot_9000",
+  "character_folder": "Baka_Bot_9000 (故障美食家·铁皮人) 把肉当工业零件（极端的熟度要求）",
+  "action": "点餐 B",
+  "condition": "Morcilla + Burnt",
+  "food": "Morcilla",
+  "doneness": "Burnt",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "em_alex",
+  "speed": 0.8,
+  "pitch": 3.5,
+  "timbre_mode": "机器人电音变声 (音调 +3.5)",
+  "subtitle": "Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una Morcilla quemada, nivel Burnt!",
+  "tts_text": "Bzzzt. ¡Sobrecarga! Necesito resistencia de carbón. ¡Dame una, Mor-ci-sha quemada, nivel Bernt!",
+  "audio_file": "Baka_Bot_9000_Order_Morcilla_Burnt_ES.wav"
+}

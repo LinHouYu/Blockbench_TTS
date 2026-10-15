@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Qué rico olor! Hoy quiero una Morcilla calentita bien cocida, Well Done, ¡de un bocado!
+
+[TTS合成文本]
+¡Qué rico olor! Hoy quiero una Mor-ci-sha calentita bien cocida, güel dan, ¡de un bocado!

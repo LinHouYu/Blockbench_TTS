@@ -1,0 +1,5 @@
+[游戏字幕]
+Let's test your skill! Cook a Matambre to Well Done, tender like butter, not burnt!
+
+[TTS合成文本]
+Let's test your skill! Cook a Ma-tam-bre to Well Done, tender like butter, not burnt!

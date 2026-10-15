@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Yupi! ¡Panza llena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!",
+  "tts_text": "¡Yu-pi! ¡Panza shena, corazón contento! ¡Sos el mejor cocinero del mundo mundial!",
+  "audio_file": "Momo_Happy_ES.wav"
+}

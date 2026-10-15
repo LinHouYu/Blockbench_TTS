@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoyi",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "哇塞，绝绝子！这色泽拍照超级出片，今天也是美美吃肉的一天呢~",
+  "tts_text": "哇塞，绝绝子！这色泽拍照超级出片，今天也是美美吃肉的一天呢！",
+  "audio_file": "Sakura_Gyaruo_Happy_CN.wav"
+}

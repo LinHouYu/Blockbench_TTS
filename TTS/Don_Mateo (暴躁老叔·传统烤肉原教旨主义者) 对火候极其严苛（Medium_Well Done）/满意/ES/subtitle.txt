@@ -1,0 +1,5 @@
+[游戏字幕]
+Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.
+
+[TTS合成文本]
+Mirá vos... un espectáculo este asado. Te felicito, pibe, aprobaste con diez.

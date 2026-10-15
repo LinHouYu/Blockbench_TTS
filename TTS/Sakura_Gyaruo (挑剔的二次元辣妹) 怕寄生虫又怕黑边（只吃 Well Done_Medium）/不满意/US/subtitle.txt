@@ -1,0 +1,5 @@
+[游戏字幕]
+Ew, gross! Who let you cook?! Your audacity is so chubby! Refund, now!
+
+[TTS合成文本]
+Ew, gross! Who let you cook?! Your audacity is so fat and chubby! Refund, now!

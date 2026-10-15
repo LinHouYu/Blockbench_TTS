@@ -1,0 +1,5 @@
+[游戏字幕]
+Uga! Fire is bad! Don't touch the grill! Throw me that Raw Costilla rib, completely uncooked!
+
+[TTS合成文本]
+Uga! Fire is bad! Don't touch the grill! Throw me that Raw Cos-tee-yah rib, completely uncooked!

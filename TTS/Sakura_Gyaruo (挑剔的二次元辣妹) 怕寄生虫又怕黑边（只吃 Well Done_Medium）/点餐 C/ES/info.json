@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "点餐 C",
+  "condition": "Chorizo + Medium",
+  "food": "Chorizo",
+  "doneness": "Medium",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Hoy es mi permitido, ¿sabés? Dame un Chorizo jugoso a punto Medium, o te escracho en redes.",
+  "tts_text": "Hoy es mi permitido, ¿sabés? Dame un Cho-ri-zo jugoso a punto Mí-dium, o te escracho en redes.",
+  "audio_file": "Sakura_Gyaruo_Order_Chorizo_Medium_ES.wav"
+}

@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "点餐 C",
+  "condition": "Chorizo + Medium",
+  "food": "Chorizo",
+  "doneness": "Medium",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoyi",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "今天偷偷放纵一下下~ 来一根爆汁的五分熟香肠（Medium），敢烤焦我就发小红书避雷你！",
+  "tts_text": "今天偷偷放纵一下下~ 来一根爆汁的，五分熟香肠，敢烤焦我就发小红书避雷你！",
+  "audio_file": "Sakura_Gyaruo_Order_Chorizo_Medium_CN.wav"
+}

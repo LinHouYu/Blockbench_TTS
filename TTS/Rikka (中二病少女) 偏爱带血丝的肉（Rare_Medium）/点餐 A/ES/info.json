@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "点餐 A",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Mortal! Mi ojo sellado exige sangre. ¡Dame una Costilla jugosa, bien Rare!",
+  "tts_text": "¡Mortal! Mi ojo se-sha-do exige sangre. ¡Dame una Cos-ti-sha jugosa, punto Reir!",
+  "audio_file": "Rikka_Order_Costilla_Rare_ES.wav"
+}

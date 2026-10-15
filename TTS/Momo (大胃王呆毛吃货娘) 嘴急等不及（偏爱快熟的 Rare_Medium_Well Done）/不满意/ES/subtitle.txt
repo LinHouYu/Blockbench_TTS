@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Buaaa! ¡No se puede comer esto! ¡Não, não, amigão! ¡Con la comida no se juega!
+
+[TTS合成文本]
+¡Buaaa! ¡No se puede comer esto! ¡Niao, niao, a-mi-gáu! ¡Con la comida no se juega!

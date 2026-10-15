@@ -1,0 +1,17 @@
+{
+  "character": "Momo",
+  "character_folder": "Momo (大胃王呆毛吃货娘) 嘴急等不及（偏爱快熟的 Rare_Medium_Well Done）",
+  "action": "点餐 A",
+  "condition": "Pollo + Medium",
+  "food": "Pollo",
+  "doneness": "Medium",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "af_bella",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Boss, I'm starving! Give me Medium Pollo chicken, super fast please! Drooling already!",
+  "tts_text": "Boss, I'm starving! Give me Medium Po-yo chicken, super fast please! Drooling already!",
+  "audio_file": "Momo_Order_Pollo_Medium_US.wav"
+}

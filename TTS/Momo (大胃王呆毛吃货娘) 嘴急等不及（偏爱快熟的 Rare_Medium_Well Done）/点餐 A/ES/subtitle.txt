@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Jefe, me muero de hambre! ¡Dame Pollo jugoso a punto Medium rapidito por favor! ¡Ñam, ñam!
+
+[TTS合成文本]
+¡Jefe, me muero de hambre! ¡Dame Po-sho jugoso a punto Mí-dium rapidito por favor! ¡Ñam, ñam!

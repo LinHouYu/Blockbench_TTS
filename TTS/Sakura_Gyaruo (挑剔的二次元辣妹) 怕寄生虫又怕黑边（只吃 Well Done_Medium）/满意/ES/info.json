@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "ES",
+  "kokoro_lang": "es",
+  "voice": "ef_dora",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "¡Ay, re lindo! Va directo para mis historias. ¡Gracias, bombón!",
+  "tts_text": "¡Ay, re lindo! Va directo para mis historias. ¡Gracias, bombón!",
+  "audio_file": "Sakura_Gyaruo_Happy_ES.wav"
+}

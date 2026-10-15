@@ -1,0 +1,5 @@
+[游戏字幕]
+¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Não, não, amigão, dedicate a otra cosa!
+
+[TTS合成文本]
+¡¿Pero qué hiciste, animal?! ¡La vaca murió en vano! ¡Niao, niao, a-mi-gáu, dedicate a otra cosa!

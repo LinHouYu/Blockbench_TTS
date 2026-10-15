@@ -1,0 +1,17 @@
+{
+  "character": "Uga_Chan",
+  "character_folder": "Uga_Chan (远古野人少女·乌嘎酱) 拒绝火文明！只吃纯生肉（Raw）或极生（Rare）！",
+  "action": "满意",
+  "condition": "符合订单",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "嗷呜嗷呜！鲜血淋漓，充满大自然的野性力量！乌嘎认你做部落大酋长！",
+  "tts_text": "嗷呜，嗷呜！鲜血淋漓，充满大自然的野性力量！乌嘎认你做部落大酋长！",
+  "audio_file": "Uga_Chan_Happy_CN.wav"
+}

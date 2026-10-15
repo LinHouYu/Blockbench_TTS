@@ -1,0 +1,5 @@
+[游戏字幕]
+Do you hear the abyss?! I demand a Rare Matambre flank steak, still bleeding!
+
+[TTS合成文本]
+Do you hear the abyss?! I demand a Rare Ma-tam-bre flank steak, still bleeding!

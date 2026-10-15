@@ -1,0 +1,5 @@
+[游戏字幕]
+Yummy... My heart goes doki-doki. Thumbs up for you.
+
+[TTS合成文本]
+Yummy... My heart goes do-ki do-ki. Thumbs up for you.

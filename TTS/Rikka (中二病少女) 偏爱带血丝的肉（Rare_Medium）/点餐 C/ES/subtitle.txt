@@ -1,0 +1,5 @@
+[游戏字幕]
+¿Oís el abismo? ¡Exijo un Matambre bien jugoso, nivel Rare, sin pasar de cocción!
+
+[TTS合成文本]
+¿Oís el abismo? ¡Exijo un Ma-tam-bre bien jugoso, nivel Reir, sin pasar de cocción!

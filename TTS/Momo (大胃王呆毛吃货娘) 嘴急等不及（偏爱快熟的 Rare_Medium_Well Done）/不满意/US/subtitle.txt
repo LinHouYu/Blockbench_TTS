@@ -1,0 +1,5 @@
+[游戏字幕]
+Waaah! I can't eat this! Your boldness is super chubby! Don't mess with my food!
+
+[TTS合成文本]
+Waaah! I can't eat this! Your boldness is super chubby! Don't mess with my food!

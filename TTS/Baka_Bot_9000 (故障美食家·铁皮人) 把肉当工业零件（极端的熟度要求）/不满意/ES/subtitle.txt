@@ -1,0 +1,5 @@
+[游戏字幕]
+¡Error 404! ¡Combustible basura! ¡Não, não, amigão! ¡Iniciando autodestrucción!
+
+[TTS合成文本]
+¡E-rror cuatro cero cuatro! ¡Combustible basura! ¡Niao, niao, a-mi-gáu! ¡Iniciando autodestrucción!

@@ -1,0 +1,5 @@
+[游戏字幕]
+Listen! Burn that Pollo chicken until it's Burnt to a crisp! I want crunchy black ash!
+
+[TTS合成文本]
+Listen! Burn that Po-yo chicken until it's Burnt to a crisp! I want crunchy black ash!

@@ -1,0 +1,17 @@
+{
+  "character": "Sakura_Gyaruo",
+  "character_folder": "Sakura_Gyaruo (挑剔的二次元辣妹) 怕寄生虫又怕黑边（只吃 Well Done_Medium）",
+  "action": "不满意",
+  "condition": "烤错食材/熟度",
+  "food": null,
+  "doneness": null,
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoyi",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "救命啊家人们谁懂啊！端上来这种东西，你的胆子真是肥嘟嘟的，退钱！",
+  "tts_text": "救命啊，家人们谁懂啊！端上来这种东西，你的胆子真是肥嘟嘟的！退钱！",
+  "audio_file": "Sakura_Gyaruo_Angry_CN.wav"
+}

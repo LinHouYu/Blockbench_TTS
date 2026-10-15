@@ -1,0 +1,5 @@
+[游戏字幕]
+Crunch, crunch Ahh! Pure carbon elements! My teeth are pitch black, 10 out of 10!
+
+[TTS合成文本]
+Crunch, crunch! Ahh! Pure carbon elements! My teeth are pitch black, ten out of ten!

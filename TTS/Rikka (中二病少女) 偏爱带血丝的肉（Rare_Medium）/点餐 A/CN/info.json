@@ -1,0 +1,17 @@
+{
+  "character": "Rikka",
+  "character_folder": "Rikka (中二病少女) 偏爱带血丝的肉（Rare_Medium）",
+  "action": "点餐 A",
+  "condition": "Costilla + Rare",
+  "food": "Costilla",
+  "doneness": "Rare",
+  "language": "CN",
+  "kokoro_lang": "cmn",
+  "voice": "zf_xiaoni",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "契约者！吾之右眼渴求着“淌着暗黑魔血的排骨”！给我一份三分熟的牛排骨！",
+  "tts_text": "契约者！吾之右眼，渴求着淌着暗黑魔血的排骨！给我一份，三分熟的，牛排骨！",
+  "audio_file": "Rikka_Order_Costilla_Rare_CN.wav"
+}

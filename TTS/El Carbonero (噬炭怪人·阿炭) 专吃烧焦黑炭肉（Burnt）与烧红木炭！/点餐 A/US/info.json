@@ -1,0 +1,17 @@
+{
+  "character": "El_Carbonero",
+  "character_folder": "El Carbonero (噬炭怪人·阿炭) 专吃烧焦黑炭肉（Burnt）与烧红木炭！",
+  "action": "点餐 A",
+  "condition": "Costilla + Burnt",
+  "food": "Costilla",
+  "doneness": "Burnt",
+  "language": "US",
+  "kokoro_lang": "en-us",
+  "voice": "am_adam",
+  "speed": 0.8,
+  "pitch": 0.0,
+  "timbre_mode": "原声音色 (统一慢速 0.8)",
+  "subtitle": "Hehehe! Give me Burnt Costilla ribs! Pitch black! If it's not charcoal, I don't want it!",
+  "tts_text": "He-he-he! Give me Burnt Cos-tee-yah ribs! Pitch black! If it's not charcoal, I don't want it!",
+  "audio_file": "El_Carbonero_Order_Costilla_Burnt_US.wav"
+}
