@@ -1,6 +1,3 @@
-Viewed transcript.jsonl:1-249
-
-````markdown
 # 烤肉游戏 8 角色 TTS 语音包自动化生成全对话历史记录
 
 ---
@@ -195,4 +192,3 @@ Viewed transcript.jsonl:1-249
 - **字幕文件 (`subtitle.txt`)**：每个叶子目录均包含【游戏字幕】与【TTS拼读文本】双版本对照。
 - **元数据 (`info.json`)**：记录角色、食材、熟度、语言代码、音调与 0.8x 语速参数。
 - **总资产清单 (`voice_manifest.json`)**：位于项目根目录，汇整全部 120 条语音资产的时长、路径与完整元数据。
-````
